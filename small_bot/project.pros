@@ -5,7 +5,7 @@
         "target": "v5",
         "templates": {
             "Ringtail": {
-                "location": "/home/nikhil/.config/pros/templates/Ringtail@0.4.0",
+                "location": "/home/nikhil/.config/pros/templates/Ringtail@0.4.1",
                 "metadata": {
                     "origin": "local"
                 },
@@ -13,11 +13,15 @@
                 "py/object": "pros.conductor.templates.local_template.LocalTemplate",
                 "supported_kernels": "^4.1.0",
                 "system_files": [
-                    "firmware/Ringtail.a"
+                    "include/ringtail/motor_group.h",
+                    "include/ringtail/controller.h",
+                    "include/ringtail/pneumatics.h",
+                    "firmware/Ringtail.a",
+                    "include/ringtail/reference_controllers.h"
                 ],
                 "target": "v5",
                 "user_files": [],
-                "version": "0.4.0"
+                "version": "0.4.1"
             },
             "kernel": {
                 "location": "/home/nikhil/.config/pros/templates/kernel@4.1.0",
