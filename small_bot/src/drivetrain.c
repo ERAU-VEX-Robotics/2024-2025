@@ -6,6 +6,7 @@
 #include "ringtail/controller.h"
 #include "ringtail/motor_group.h"
 #include "ringtail/reference_controllers.h"
+#include <math.h>
 
 /**
  * @file drivetrain.c
@@ -14,8 +15,8 @@
  */
 
 // Motor groups for each side of the drivetrain
-static rgt_motor_group left_motors = {1, 2, 3};
-static rgt_motor_group right_motors = {-4, -5, -6};
+static rgt_motor_group left_motors = {-11, -2, -1};
+static rgt_motor_group right_motors = {8, 7, 6};
 
 /**
  * Ringtail task variables and function prototypes for each side of the
@@ -42,6 +43,9 @@ double right_mg_controller(double target, double current, bool reset);
  * # of teeth on the gears attached to the sensor - in this case the motor
  */
 static const double GEAR_RATIO = 36.0 / 60.0;
+
+static const double WHEEL_DIAMETER = 3.25;
+static const double BASE_WIDTH = 11.375;
 
 /**
  * Motor encoder position threshold within which the drivetrain's PID
@@ -73,6 +77,19 @@ void drivetrain_opcontrol(controller_analog_e_t left,
 	rgt_mg_move(left_motors, controller_get_analog(E_CONTROLLER_MASTER, left));
 	rgt_mg_move(right_motors,
 	            controller_get_analog(E_CONTROLLER_MASTER, right));
+}
+
+void drivetrain_move_straight(double inches) {
+	double target = inches * WHEEL_DIAMETER / 2 * 180 / M_PI;
+	rgt_controller_set_target(&left_pid_info, target);
+	rgt_controller_set_target(&right_pid_info, target);
+}
+
+void drivetrain_turn_angle(double angle) {
+	double inches = angle * M_PI / 180 * BASE_WIDTH / 2;
+	double target = inches * WHEEL_DIAMETER / 2 * 180 / M_PI;
+	rgt_controller_set_target(&left_pid_info, target);
+	rgt_controller_set_target(&right_pid_info, -target);
 }
 
 double left_mg_get_pos(void) {
