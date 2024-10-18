@@ -14,4 +14,18 @@
 // Initializes internal intake variables
 void intake_init(void);
 
+// Moves the intake up
+void intake_up(void);
+
+// Moves the intake down
+void intake_down(void);
+
+// Intake grabs ring
+void intake_in(void);
+
+// Intake releases ring
+void intake_out(void);
+
+
+
 #endif
