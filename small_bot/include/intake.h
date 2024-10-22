@@ -12,9 +12,6 @@
  * abstracting away specific information.
  */
 
-// Initializes internal intake variables
-void intake_init(void);
-
 // Moves the intake up
 void intake_up(void);
 
