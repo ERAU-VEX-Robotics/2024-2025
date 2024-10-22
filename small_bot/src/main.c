@@ -1,13 +1,14 @@
 #include "main.h"
 
+#include "drivetrain.h"
+
 /**
  * Runs initialization code. This occurs as soon as the program is started.
  *
  * All other competition modes are blocked by initialize; it is recommended
  * to keep execution time for this mode under a few seconds.
  */
-void initialize() {
-}
+void initialize() {}
 
 /**
  * Runs while the robot is in the disabled state of Field Management System or
@@ -55,6 +56,7 @@ void autonomous() {}
  */
 void opcontrol() {
 	while (true) {
+		drivetrain_opcontrol(ANALOG_LEFT_Y, ANALOG_RIGHT_Y);
 		delay(20);
 	}
 }
