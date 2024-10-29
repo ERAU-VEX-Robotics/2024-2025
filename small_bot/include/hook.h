@@ -12,11 +12,11 @@
  * abstracting away specific information.
  */
 
- // Moves the hook up
-void hook_up(void);
+// Rotate the hook to suplex the ring into the goal
+void hook_forwards(void);
 
-// Moves the hook down
-void hook_down(void);
+// Rotate the hook in the reverse direction, opposite of scooping
+void hook_reverse(void);
 
 /**
  * @brief Hook operation controller
@@ -24,15 +24,11 @@ void hook_down(void);
  * @details Hook controller, polls what buttons are pressed
  *          and calls their respective hook functions
  * 
- * @param up_button   - Button to call hook_up to move hook up
- * @param down_button - Button to call hook_down to move hook down
- * @param in_button   - Button to call hook_in to grab ring
- * @param out_button  - Button to call hook_out to release held ring
+ * @param forwards_button   - Button to call hook_up to move hook up
+ * @param reverse_button - Button to call hook_down to move hook down
  */
 
-void hook_opcontrol(controller_digital_e_t up_button,
-                    controller_digital_e_t down_button,
-                    controller_digital_e_t in_button,
-                    controller_digital_e_t out_button);
+void hook_opcontrol(controller_digital_e_t forwards_button,
+                    controller_digital_e_t reverse_button);
 
 #endif 
