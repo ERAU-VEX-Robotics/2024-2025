@@ -24,10 +24,9 @@ void hook_reverse(void);
  * @details Hook controller, polls what buttons are pressed
  *          and calls their respective hook functions
  * 
- * @param forwards_button   - Button to call hook_up to move hook up
- * @param reverse_button - Button to call hook_down to move hook down
+ * @param forwards_button  - Button to call hook_up to move hook up
+ * @param reverse_button  - Button to call hook_down to move hook down
  */
-
 void hook_opcontrol(controller_digital_e_t forwards_button,
                     controller_digital_e_t reverse_button);
 
