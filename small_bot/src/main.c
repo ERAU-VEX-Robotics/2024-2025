@@ -1,8 +1,10 @@
 #include "main.h"
-#include "intake.h"
-#include "pros/misc.h"
-
 #include "drivetrain.h"
+#include "hook.h"
+#include "intake.h"
+#include "spike.h"
+
+#include "pros/misc.h"
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -58,10 +60,16 @@ void autonomous() {}
  */
 void opcontrol() {
 	while (true) {
+		// Call the opcontrol functions, polling inputs
 		intake_opcontrol(E_CONTROLLER_DIGITAL_L1, E_CONTROLLER_DIGITAL_L2,
 		                 E_CONTROLLER_DIGITAL_R1, E_CONTROLLER_DIGITAL_R2);
 
 		drivetrain_opcontrol(ANALOG_LEFT_Y, ANALOG_RIGHT_Y);
+
+		hook_opcontrol(E_CONTROLLER_DIGITAL_B, E_CONTROLLER_DIGITAL_X);
+
+		spike_opcontrol(E_CONTROLLER_DIGITAL_A);
+
 		delay(20);
 	}
 }

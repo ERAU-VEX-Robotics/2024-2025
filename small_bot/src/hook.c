@@ -16,11 +16,11 @@ static rgt_motor_group hook_motor = {18};
 
 // Hook function implementations
 void hook_forwards(void) {
-    rgt_mg_move(hook_motor, 127);  // Rotate hook to "suplex" the ring onto the goal
+    rgt_mg_move(hook_motor, -127);  // Rotate hook to "suplex" the ring onto the goal
 }
 
 void hook_reverse(void) {
-    rgt_mg_move(hook_motor, -127);  // Reverse hook rotation, pushing
+    rgt_mg_move(hook_motor, 127);  // Reverse hook rotation, pushing
 }
 
 // Hook opcontrol implementation
