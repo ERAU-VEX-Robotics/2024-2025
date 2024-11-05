@@ -10,9 +10,11 @@
  * @brief Function implementations and local variables for controlling the intake
  */ 
 
+// Initialize motor group objects for the intake
 static rgt_motor_group intake_pivot  = {8};  
 static rgt_motor_group intake_motors = {-9};
 
+// Intake function implementations
 void intake_up(void) {
     rgt_mg_move(intake_pivot, 127);  // todo fix voltages
 }
@@ -29,6 +31,7 @@ void intake_out() {
     rgt_mg_move(intake_motors, -127);
 }
 
+// Intake opcontrol implementation
 void intake_opcontrol(controller_digital_e_t up_button,
                       controller_digital_e_t down_button,
                       controller_digital_e_t in_button,
