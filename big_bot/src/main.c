@@ -1,7 +1,7 @@
 #include "main.h"
-#include "pros/misc.h"	
-
 #include "arm.h"
+#include "drivetrain.h"
+#include "pros/misc.h"
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -57,6 +57,8 @@ void autonomous() {}
  */
 void opcontrol() {
 	while (true) {
+		drivetrain_opcontrol(E_CONTROLLER_ANALOG_LEFT_Y,
+		                     E_CONTROLLER_ANALOG_RIGHT_Y);
 		arm_opcontrol(E_CONTROLLER_DIGITAL_UP, E_CONTROLLER_DIGITAL_DOWN);
 		delay(20); // Run for 20 ms then update
 	}
