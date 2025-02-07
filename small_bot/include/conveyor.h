@@ -27,7 +27,7 @@
  * @param up_button   Button to call conveyor_up to move conveyor up
  * @param down_button Button to call conveyor_down to move conveyor down
  */
- void intake_opcontrol(controller_digital_e_t up_button,
+ void conveyor_opcontrol(controller_digital_e_t up_button,
                       controller_digital_e_t down_button);
                      
 #endif
