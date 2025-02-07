@@ -58,7 +58,7 @@ void opcontrol() {
 	while (true) {
 		intake_opcontrol(E_CONTROLLER_DIGITAL_R2, E_CONTROLLER_DIGITAL_R1);
 
-		conveyor_opcontrol(E_CONTROLLER_DIGITAL_L2);
+		conveyor_opcontrol(E_CONTROLLER_DIGITAL_L2, E_CONTROLLER_DIGITAL_A);
 		delay(20); // Run for 20 ms then update
 	}
 }
