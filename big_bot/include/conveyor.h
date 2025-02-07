@@ -12,13 +12,13 @@
  * abstracting away specific information.
  */
 
- // Moves the conveyor up
- void conveyor_up(void);
+// Moves the conveyor up
+void conveyor_up(void);
 
- // Moves the conveyor down
- void conveyor_down(void);
+// Moves the conveyor down
+void conveyor_down(void);
 
- /**
+/**
  * @brief Conveyor operation controller
  *
  * @details Conveyor controller, polls what buttons are pressed
@@ -27,7 +27,7 @@
  * @param up_button   Button to call conveyor_up to move conveyor up
  * @param down_button Button to call conveyor_down to move conveyor down
  */
- void conveyor_opcontrol(controller_digital_e_t up_button,
+void conveyor_opcontrol(controller_digital_e_t up_button,
                         controller_digital_e_t down_button);
-                     
+
 #endif
