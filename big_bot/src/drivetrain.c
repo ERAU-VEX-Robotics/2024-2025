@@ -15,8 +15,8 @@
  */
 
 // Motor groups for each side of the drivetrain
-static rgt_motor_group left_motors = {-1, -2, -3};
-static rgt_motor_group right_motors = {4, 5, 6};
+static rgt_motor_group left_motors = {18, 19, 20};
+static rgt_motor_group right_motors = {-8, -9, -10};
 
 /**
  * Ringtail task variables and function prototypes for each side of the
@@ -92,11 +92,12 @@ void drivetrain_turn_angle(double angle) {
 	rgt_controller_set_target(&right_pid_info, -target);
 }
 
-void drivetrain_wait_until_at_target(uint32_t timeout){
-    while(!rgt_controller_at_target(&right_pid_info) || !rgt_controller_at_target(&left_pid_info)){
-        delay(10);
-    }
-    delay(timeout);
+void drivetrain_wait_until_at_target(uint32_t timeout) {
+	while (!rgt_controller_at_target(&right_pid_info) ||
+	       !rgt_controller_at_target(&left_pid_info)) {
+		delay(10);
+	}
+	delay(timeout);
 }
 
 double left_mg_get_pos(void) {
@@ -157,20 +158,19 @@ double right_mg_controller(double target, double current, bool reset) {
 }
 
 // Suspend the drivetrain PID tasks
-void drivetrain_suspend_pid_tasks(void){
-    task_suspend(left_pid_task);
-    task_suspend(right_pid_task);
+void drivetrain_suspend_pid_tasks(void) {
+	task_suspend(left_pid_task);
+	task_suspend(right_pid_task);
 }
 
 // Resume the drivetrain PID tasks
-void drivetrain_resume_pid_tasks(void){
-    task_resume(left_pid_task);
-    task_resume(right_pid_task);
+void drivetrain_resume_pid_tasks(void) {
+	task_resume(left_pid_task);
+	task_resume(right_pid_task);
 }
 
 // Delete the drivetrain PID tasks
-void drivetrain_delete_pid_tasks(void){
-    task_delete(left_pid_task);
-    task_delete(right_pid_task);
-
+void drivetrain_delete_pid_tasks(void) {
+	task_delete(left_pid_task);
+	task_delete(right_pid_task);
 }
