@@ -1,4 +1,6 @@
 #include "main.h"
+#include "conveyor.h"
+#include "intake.h"
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -54,6 +56,9 @@ void autonomous() {}
  */
 void opcontrol() {
 	while (true) {
+		intake_opcontrol(E_CONTROLLER_DIGITAL_R2, E_CONTROLLER_DIGITAL_R1);
+
+		conveyor_opcontrol(E_CONTROLLER_DIGITAL_L2);
 		delay(20); // Run for 20 ms then update
 	}
 }
