@@ -64,7 +64,7 @@ void opcontrol() {
 		conveyor_opcontrol(E_CONTROLLER_DIGITAL_L2, E_CONTROLLER_DIGITAL_A);
 		drivetrain_opcontrol(E_CONTROLLER_ANALOG_LEFT_Y,
 		                     E_CONTROLLER_ANALOG_RIGHT_Y);
-		arm_opcontrol(E_CONTROLLER_DIGITAL_UP, E_CONTROLLER_DIGITAL_DOWN);
+		// arm_opcontrol(E_CONTROLLER_DIGITAL_UP, E_CONTROLLER_DIGITAL_DOWN);
 		delay(20); // Run for 20 ms then update
 	}
 }
