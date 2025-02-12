@@ -1,7 +1,8 @@
 #include "main.h"
-#include "intake.h"
 #include "conveyor.h"
+#include "intake.h"
 #include "pros/misc.h"
+#include "spike.h"
 
 #include "drivetrain.h"
 
@@ -12,7 +13,7 @@
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-	spike_init();  // Initialize the spike
+	spike_init(); // Initialize the spike
 }
 
 /**
@@ -65,7 +66,8 @@ void opcontrol() {
 		                 E_CONTROLLER_DIGITAL_R1, E_CONTROLLER_DIGITAL_R2);
 
 		conveyor_opcontrol(E_CONTROLLER_DIGITAL_L1, E_CONTROLLER_DIGITAL_L2);
-		
+		spike_opcontrol(E_CONTROLLER_DIGITAL_A);
+
 		drivetrain_opcontrol(ANALOG_LEFT_Y, ANALOG_RIGHT_Y);
 		delay(20);
 	}
