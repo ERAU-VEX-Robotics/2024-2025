@@ -15,8 +15,8 @@
  */
 
 // Motor groups for each side of the drivetrain
-static rgt_motor_group left_motors = {-1, -2, -3};
-static rgt_motor_group right_motors = {4, 5, 6};
+static rgt_motor_group left_motors = {-11, -12, -13};
+static rgt_motor_group right_motors = {14, 15, 16};
 
 /**
  * Ringtail task variables and function prototypes for each side of the
