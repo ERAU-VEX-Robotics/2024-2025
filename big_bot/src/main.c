@@ -3,6 +3,7 @@
 #include "conveyor.h"
 #include "drivetrain.h"
 #include "intake.h"
+#include "piston.h"
 #include "pros/misc.h"
 
 /**
@@ -11,7 +12,7 @@
  * All other competition modes are blocked by initialize; it is recommended
  * to keep execution time for this mode under a few seconds.
  */
-void initialize() {}
+void initialize() { piston_init(); }
 
 /**
  * Runs while the robot is in the disabled state of Field Management System or
@@ -65,6 +66,7 @@ void opcontrol() {
 		drivetrain_opcontrol(E_CONTROLLER_ANALOG_LEFT_Y,
 		                     E_CONTROLLER_ANALOG_RIGHT_Y);
 		// arm_opcontrol(E_CONTROLLER_DIGITAL_UP, E_CONTROLLER_DIGITAL_DOWN);
+		piston_opcontrol(E_CONTROLLER_DIGITAL_L1);
 		delay(20); // Run for 20 ms then update
 	}
 }
