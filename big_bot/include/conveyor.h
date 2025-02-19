@@ -18,6 +18,8 @@ void conveyor_up(void);
 // Moves the conveyor down
 void conveyor_down(void);
 
+void conveyor_stop(void);
+
 /**
  * @brief Conveyor operation controller
  *

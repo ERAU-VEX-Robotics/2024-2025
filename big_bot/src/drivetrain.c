@@ -84,9 +84,9 @@ void drivetrain_opcontrol(controller_analog_e_t left,
 }
 
 void drivetrain_move_straight(double inches) {
-	kP = 20;
-	kI = 5;
-	kD = 10;
+	kP = 78;
+	kI = 36;
+	kD = 5;
 
 	double target = inches * WHEEL_DIAMETER / 2 * 180 / M_PI;
 	rgt_controller_set_target(&left_pid_info, target);
@@ -94,9 +94,9 @@ void drivetrain_move_straight(double inches) {
 }
 
 void drivetrain_turn_angle(double angle) {
-	kP = 20;
-	kI = 5;
-	kD = 10;
+	kP = 78;
+	kI = 36;
+	kD = 5;
 
 	double inches = angle * M_PI / 180 * BASE_WIDTH / 2;
 	double target = inches * WHEEL_DIAMETER / 2 * 180 / M_PI;

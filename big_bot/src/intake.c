@@ -17,6 +17,8 @@ void intake_in() { rgt_mg_move(intake_motors, 127); }
 
 void intake_out() { rgt_mg_move(intake_motors, -127); }
 
+void intake_stop(){ rgt_mg_move(intake_motors, 0);}
+
 void intake_opcontrol(controller_digital_e_t in_button,
                       controller_digital_e_t out_button) {
 	if (controller_get_digital(E_CONTROLLER_MASTER, in_button)) {

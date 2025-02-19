@@ -43,7 +43,45 @@ void competition_initialize() {}
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
-void autonomous() {}
+void autonomous() {
+	drivetrain_move_straight(18);
+	conveyor_up();
+	intake_in();
+	drivetrain_wait_until_at_target(1000);
+	//delay(18000);
+	drivetrain_turn_angle(-45);
+	drivetrain_wait_until_at_target(1500);
+	conveyor_stop();
+	/*
+	drivetrain_move_straight(18);
+	drivetrain_wait_until_at_target(1000);
+	intake_stop();
+	drivetrain_turn_angle(45);
+	drivetrain_wait_until_at_target(1500);
+	drivetrain_move_straight(-18);
+	drivetrain_wait_until_at_target(1000);
+	piston_toggle();
+	conveyor_up();
+	intake_in();
+	drivetrain_turn_angle(180);
+	drivetrain_wait_until_at_target(1500);
+	drivetrain_move_straight(18);
+	drivetrain_wait_until_at_target(1000);
+	drivetrain_turn_angle(45);
+	drivetrain_wait_until_at_target(1500);
+	drivetrain_move_straight(18);
+	drivetrain_wait_until_at_target(1000);
+	intake_stop();
+	drivetrain_move_straight(-6);
+	drivetrain_wait_until_at_target(1000);
+	drivetrain_turn_angle(180);
+	drivetrain_wait_until_at_target(1500);
+	conveyer_stop();
+	drivetrain_move_straight(-6);
+	drivetrain_wait_until_at_target(1000);	
+	piston_toggle();
+	*/
+}
 
 /**
  * Runs the operator control code. This function will be started in its own task

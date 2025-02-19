@@ -17,6 +17,8 @@ void conveyor_up(void) { rgt_mg_move(conveyor_run, 127); }
 
 void conveyor_down(void) { rgt_mg_move(conveyor_run, -127); }
 
+void conveyor_stop(void){ rgt_mg_move(conveyor_run, 0);}
+
 void conveyor_opcontrol(controller_digital_e_t up_button,
                         controller_digital_e_t down_button) {
 	if (controller_get_digital(E_CONTROLLER_MASTER, up_button)) {
