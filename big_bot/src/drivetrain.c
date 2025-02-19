@@ -37,6 +37,10 @@ double right_mg_get_pos(void);
 double left_mg_controller(double target, double current, bool reset);
 double right_mg_controller(double target, double current, bool reset);
 
+static bool kP = 0;
+static bool kI = 0;
+static bool kD = 0;
+
 /**
  * Gear Ratio on the drivetrain -  defined as:
  * # of teeth on the gears attached to the wheels /
@@ -45,7 +49,7 @@ double right_mg_controller(double target, double current, bool reset);
 static const double GEAR_RATIO = 36.0 / 60.0;
 
 static const double WHEEL_DIAMETER = 3.25;
-static const double BASE_WIDTH = 11.375;
+static const double BASE_WIDTH = 14.5;
 
 /**
  * Motor encoder position threshold within which the drivetrain's PID
@@ -80,12 +84,20 @@ void drivetrain_opcontrol(controller_analog_e_t left,
 }
 
 void drivetrain_move_straight(double inches) {
+	kP = 20;
+	kI = 5;
+	kD = 10;
+
 	double target = inches * WHEEL_DIAMETER / 2 * 180 / M_PI;
 	rgt_controller_set_target(&left_pid_info, target);
 	rgt_controller_set_target(&right_pid_info, target);
 }
 
 void drivetrain_turn_angle(double angle) {
+	kP = 20;
+	kI = 5;
+	kD = 10;
+
 	double inches = angle * M_PI / 180 * BASE_WIDTH / 2;
 	double target = inches * WHEEL_DIAMETER / 2 * 180 / M_PI;
 	rgt_controller_set_target(&left_pid_info, target);
@@ -127,7 +139,7 @@ double left_mg_controller(double target, double current, bool reset) {
 	}
 
 	double voltage =
-	    pid(error, 20, 2, 5, &integral, prev_error, clear_integral);
+	    pid(error, kP, kI, kD, &integral, prev_error, clear_integral);
 
 	prev_error = error;
 
@@ -150,7 +162,7 @@ double right_mg_controller(double target, double current, bool reset) {
 	}
 
 	double voltage =
-	    pid(error, 20, 2, 5, &integral, prev_error, clear_integral);
+	    pid(error, kP, kI, kD, &integral, prev_error, clear_integral);
 
 	prev_error = error;
 
