@@ -7,6 +7,7 @@
 #include "ringtail/motor_group.h"
 #include "ringtail/reference_controllers.h"
 #include <math.h>
+#include <stdio.h>
 
 /**
  * @file drivetrain.c
@@ -41,6 +42,7 @@ static bool kP = 20;
 static bool kI = 1;
 static bool kD = 15;
 
+static double prev_error = 0;
 /**
  * Gear Ratio on the drivetrain -  defined as:
  * # of teeth on the gears attached to the wheels /
@@ -84,33 +86,44 @@ void drivetrain_opcontrol(controller_analog_e_t left,
 }
 
 void drivetrain_move_straight(double inches) {
-	kP = 29;
-	kI = 3;
+	kP = 290;
+	kI = 1;
 	kD = 25;
 
-	double target = inches *(WHEEL_DIAMETER / 2) * 180 / M_PI;
+	double target = inches * (WHEEL_DIAMETER / 2) * 180 / M_PI;
+	prev_error = 0;
+	rgt_mg_reset_positions(left_motors);
+	rgt_mg_reset_positions(right_motors);
 
 	rgt_controller_set_target(&left_pid_info, target);
 	rgt_controller_set_target(&right_pid_info, target);
 }
 
 void drivetrain_turn_angle(double angle) {
-	kP = 20;
-	kI = 1;
-	kD = 15;
+	kP = 290;
+	kI = 3;
+	kD = 25;
 
-	double inches = angle * M_PI / 180 * BASE_WIDTH / 2;
-	double target = inches * WHEEL_DIAMETER / 2 * 180 / M_PI;
+	prev_error = 0;
+	double inches = angle  * BASE_WIDTH / 2;
+	double target = inches;// * WHEEL_DIAMETER / 2 ;
+
+	rgt_mg_reset_positions(left_motors);
+	rgt_mg_reset_positions(right_motors);
+
 	rgt_controller_set_target(&left_pid_info, target);
 	rgt_controller_set_target(&right_pid_info, -target);
 }
 
 void drivetrain_wait_until_at_target(uint32_t timeout) {
-	while (!rgt_controller_at_target(&right_pid_info) ||
-	       !rgt_controller_at_target(&left_pid_info)) {
-		delay(10);
-	}
-	delay(timeout);
+	do {
+		timeout -= 2;
+		delay(2);
+		//snprintf("%zu\n", timeout);
+	} while ((!rgt_controller_at_target(&right_pid_info) ||
+	       !rgt_controller_at_target(&left_pid_info)) &&
+		   timeout > 0);
+		   
 }
 
 double left_mg_get_pos(void) {
@@ -125,7 +138,8 @@ double right_mg_get_pos(void) {
 }
 
 double left_mg_controller(double target, double current, bool reset) {
-	static double integral, prev_error = 0;
+	static double integral;
+	prev_error = 0;
 
 	bool clear_integral = false;
 
@@ -148,7 +162,8 @@ double left_mg_controller(double target, double current, bool reset) {
 }
 
 double right_mg_controller(double target, double current, bool reset) {
-	static double integral, prev_error = 0;
+	static double integral;
+	prev_error = 0;
 
 	bool clear_integral = false;
 

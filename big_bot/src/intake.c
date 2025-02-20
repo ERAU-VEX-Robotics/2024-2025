@@ -22,6 +22,8 @@ void intake_init(void) {
 void intake_in() { rgt_mg_move(intake_motors, 127); }
 
 void intake_out() { rgt_mg_move(intake_motors, -127); }
+ 
+void intake_half(){rgt_mg_move(intake_motors, 60);}
 
 void intake_stop() { rgt_mg_move(intake_motors, 0); }
 

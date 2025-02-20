@@ -14,7 +14,7 @@
 void intake_init(void);
 // Intake grabs ring
 void intake_in(void);
-
+void intake_half(void);
 // Intake releases ring
 void intake_out(void);
 

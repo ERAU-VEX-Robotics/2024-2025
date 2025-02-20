@@ -50,41 +50,46 @@ void competition_initialize() {}
  */
 void autonomous() {
 	drivetrain_resume_pid_tasks();
-	drivetrain_move_straight(18);
+	drivetrain_move_straight(24);
 	conveyor_up();
 	intake_in();
-	drivetrain_wait_until_at_target(1000);
-	delay(18000);
+	delay(2000);
+	intake_half();
+	delay(2500);
+	conveyor_stop();
+	drivetrain_wait_until_at_target(500);
+	//delay(18000);
+	intake_stop();
 	drivetrain_turn_angle(-45);
 	drivetrain_wait_until_at_target(1500);
-	conveyor_stop();
-	/*
-	drivetrain_move_straight(18);
-	drivetrain_wait_until_at_target(1000);
+	intake_in();
+	drivetrain_move_straight(20);
+	delay(3000);
 	intake_stop();
+	drivetrain_wait_until_at_target(1500);
 	drivetrain_turn_angle(45);
 	drivetrain_wait_until_at_target(1500);
-	drivetrain_move_straight(-18);
+	drivetrain_move_straight(-3.8);
 	drivetrain_wait_until_at_target(1000);
 	piston_toggle();
 	conveyor_up();
-	intake_in();
-	drivetrain_turn_angle(180);
+	intake_half();
+	delay(4000);
+	drivetrain_turn_angle(-180);
 	drivetrain_wait_until_at_target(1500);
-	drivetrain_move_straight(18);
-	drivetrain_wait_until_at_target(1000);
 	drivetrain_turn_angle(45);
-	drivetrain_wait_until_at_target(1500);
-	drivetrain_move_straight(18);
+	drivetrain_wait_until_at_target(1500);	
+	drivetrain_move_straight(20);
 	drivetrain_wait_until_at_target(1000);
-	intake_stop();
-	drivetrain_move_straight(-6);
+	/*intake_stop();
+	drivetrain_move_straight(-1);
 	drivetrain_wait_until_at_target(1000);
-	drivetrain_turn_angle(180);
+	drivetrain_turn_angle(90);
 	drivetrain_wait_until_at_target(1500);
+	drivetrain_turn_angle(-90)
 	conveyer_stop();
-	drivetrain_move_straight(-6);
-	drivetrain_wait_until_at_target(1000);
+	drivetrain_move_straight(-1);
+	drivetrain_wait_until_at_target(1000);	
 	piston_toggle();
 	*/
 }
