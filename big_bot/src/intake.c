@@ -13,6 +13,12 @@
 
 static rgt_motor_group intake_motors = {2, 4};
 
+void intake_init(void){
+		
+	rgt_mg_set_gearing(&intake_motors, E_MOTOR_GEAR_GREEN);
+	rgt_mg_set_encoder_units(&intake_motors, E_MOTOR_ENCODER_DEGREES);
+	rgt_mg_set_brake_mode(&intake_motors, E_MOTOR_BRAKE_HOLD);
+}
 void intake_in() { rgt_mg_move(intake_motors, 127); }
 
 void intake_out() { rgt_mg_move(intake_motors, -127); }

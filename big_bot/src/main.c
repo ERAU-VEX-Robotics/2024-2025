@@ -12,7 +12,11 @@
  * All other competition modes are blocked by initialize; it is recommended
  * to keep execution time for this mode under a few seconds.
  */
-void initialize() { piston_init(); }
+void initialize() { 
+	drivetrain_init();
+	intake_init();
+	conveyor_init();
+	piston_init(); }
 
 /**
  * Runs while the robot is in the disabled state of Field Management System or
@@ -44,11 +48,12 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
+	drivetrain_resume_pid_tasks();
 	drivetrain_move_straight(18);
 	conveyor_up();
 	intake_in();
 	drivetrain_wait_until_at_target(1000);
-	//delay(18000);
+	delay(18000);
 	drivetrain_turn_angle(-45);
 	drivetrain_wait_until_at_target(1500);
 	conveyor_stop();
@@ -97,6 +102,7 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
+	drivetrain_suspend_pid_tasks();
 	while (true) {
 		intake_opcontrol(E_CONTROLLER_DIGITAL_R2, E_CONTROLLER_DIGITAL_R1);
 
@@ -107,4 +113,5 @@ void opcontrol() {
 		piston_opcontrol(E_CONTROLLER_DIGITAL_L1);
 		delay(20); // Run for 20 ms then update
 	}
+	drivetrain_delete_pid_tasks();
 }

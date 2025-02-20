@@ -11,7 +11,7 @@
  * control the conveyor. These functions serve as an API for the conveyor,
  * abstracting away specific information.
  */
-
+void conveyor_init(void);
 // Moves the conveyor up
 void conveyor_up(void);
 

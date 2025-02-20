@@ -11,7 +11,7 @@
  * control the intake. These functions serve as an API for the intake,
  * abstracting away specific information.
  */
-
+void intake_init(void);
 // Intake grabs ring
 void intake_in(void);
 
