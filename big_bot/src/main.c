@@ -12,11 +12,12 @@
  * All other competition modes are blocked by initialize; it is recommended
  * to keep execution time for this mode under a few seconds.
  */
-void initialize() { 
+void initialize() {
 	drivetrain_init();
 	intake_init();
 	conveyor_init();
-	piston_init(); }
+	piston_init();
+}
 
 /**
  * Runs while the robot is in the disabled state of Field Management System or
@@ -83,7 +84,7 @@ void autonomous() {
 	drivetrain_wait_until_at_target(1500);
 	conveyer_stop();
 	drivetrain_move_straight(-6);
-	drivetrain_wait_until_at_target(1000);	
+	drivetrain_wait_until_at_target(1000);
 	piston_toggle();
 	*/
 }

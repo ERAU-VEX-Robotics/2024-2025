@@ -2,6 +2,7 @@
 
 #include "pros/misc.h"
 
+#include "pros/motors.h"
 #include "ringtail/motor_group.h"
 
 /**
@@ -12,18 +13,17 @@
  */
 
 static rgt_motor_group conveyor_run = {-1};
-void conveyor_init(void){
-	
-	rgt_mg_set_gearing(&conveyor_run, E_MOTOR_GEAR_GREEN);
-	rgt_mg_set_encoder_units(&conveyor_run, E_MOTOR_ENCODER_DEGREES);
-	rgt_mg_set_brake_mode(&conveyor_run, E_MOTOR_BRAKE_HOLD);
+void conveyor_init(void) {
+	rgt_mg_set_gearing(conveyor_run, E_MOTOR_GEAR_GREEN);
+	rgt_mg_set_encoder_units(conveyor_run, E_MOTOR_ENCODER_DEGREES);
+	rgt_mg_set_brake_mode(conveyor_run, E_MOTOR_BRAKE_COAST);
 }
 
 void conveyor_up(void) { rgt_mg_move(conveyor_run, 127); }
 
 void conveyor_down(void) { rgt_mg_move(conveyor_run, -127); }
 
-void conveyor_stop(void){ rgt_mg_move(conveyor_run, 0);}
+void conveyor_stop(void) { rgt_mg_move(conveyor_run, 0); }
 
 void conveyor_opcontrol(controller_digital_e_t up_button,
                         controller_digital_e_t down_button) {
