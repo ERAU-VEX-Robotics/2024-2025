@@ -1,6 +1,7 @@
 #include "drivetrain.h"
 
 #include "pros/misc.h"
+#include "pros/motors.h"
 #include "pros/rtos.h"
 
 #include "ringtail/controller.h"
@@ -38,18 +39,16 @@ double right_mg_get_pos(void);
 double left_mg_controller(double target, double current, bool reset);
 double right_mg_controller(double target, double current, bool reset);
 
-static bool kP = 2900;
-static bool kI = 1;
-static bool kD = 25;
+static uint16_t kP = 20;
+static uint16_t kI = 1;
+static uint16_t kD = 15;
 
-static double prev_errorR = 0;
-static double prev_errorL = 0;
 /**
  * Gear Ratio on the drivetrain -  defined as:
  * # of teeth on the gears attached to the wheels /
  * # of teeth on the gears attached to the sensor - in this case the motor
  */
-static const double GEAR_RATIO = 36.0/60.0 ;
+static const double GEAR_RATIO = 36.0 / 60.0;
 
 static const double WHEEL_DIAMETER = 3.25;
 static const double BASE_WIDTH = 14;
@@ -76,6 +75,14 @@ void drivetrain_init(void) {
 	right_pid_task = rgt_controller_create(
 	    &right_pid_info, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT,
 	    "Drive Right Controller");
+
+	rgt_mg_set_gearing(left_motors, E_MOTOR_GEAR_GREEN);
+	rgt_mg_set_gearing(right_motors, E_MOTOR_GEAR_GREEN);
+	rgt_mg_set_encoder_units(left_motors, E_MOTOR_ENCODER_DEGREES);
+	rgt_mg_set_encoder_units(right_motors, E_MOTOR_ENCODER_DEGREES);
+
+	rgt_mg_set_brake_mode(left_motors, E_MOTOR_BRAKE_COAST);
+	rgt_mg_set_brake_mode(right_motors, E_MOTOR_BRAKE_COAST);
 }
 
 void drivetrain_opcontrol(controller_analog_e_t left,
@@ -89,16 +96,13 @@ void drivetrain_move_straight(double inches) {
 	kP = 2900;
 	kI = 1;
 	kD = 25;
-	//double target = (180 / M_PI) * (inches * (WHEEL_DIAMETER / 2));
-	double target = 900*GEAR_RATIO*(inches/(M_PI*WHEEL_DIAMETER));
-	//this is the proper function for distance
-	//it takes the inches you want to go, turn it into how many 
-	//revolutions you want to do, then turns that into how many 
-	//encoder counts does it need to do
-	prev_errorL = 0;
-	prev_errorR = 0;
+
+	double target = inches / (WHEEL_DIAMETER / 2) * 180 / M_PI;
 	rgt_mg_reset_positions(left_motors);
 	rgt_mg_reset_positions(right_motors);
+	rgt_controller_reset(&left_pid_info);
+	rgt_controller_reset(&right_pid_info);
+
 	rgt_controller_set_target(&left_pid_info, target);
 	rgt_controller_set_target(&right_pid_info, target);
 }
@@ -108,106 +112,82 @@ void drivetrain_turn_angle(double angle) {
 	kI = 3;
 	kD = 25;
 
-	prev_errorL = 0;
-	prev_errorR = 0;
-	//this is the proper function for distance
-	//it takes the angle, turns it into inches,
-	// then takes the inches you want to go, turn it into how many 
-	//revolutions you want to do, then turns that into how many 
-	//encoder counts does it need to do
-	if(angle >0 ){
-		double inches = ((angle)  * M_PI * BASE_WIDTH)/36;
-		double target = 90*GEAR_RATIO*(inches/(M_PI*WHEEL_DIAMETER));
-		rgt_mg_move_relative(left_motors,target,60);
-		rgt_mg_move_relative(right_motors,target,-60);
-	}else{
-		double inches = ((-angle)  * M_PI * BASE_WIDTH)/36;
-		double target = 90*GEAR_RATIO*(inches/(M_PI*WHEEL_DIAMETER));
-		rgt_mg_move_relative(left_motors,target,-60);
-		rgt_mg_move_relative(right_motors,target,60);
-	}
-	/*rgt_mg_reset_positions(left_motors);
+	double inches = angle * BASE_WIDTH / 2;
+	double target = inches / (WHEEL_DIAMETER / 2) * 180 / M_PI;
+
+	rgt_mg_reset_positions(left_motors);
 	rgt_mg_reset_positions(right_motors);
 
+	rgt_controller_reset(&left_pid_info);
+	rgt_controller_reset(&right_pid_info);
+
 	rgt_controller_set_target(&left_pid_info, target);
-	rgt_controller_set_target(&right_pid_info, -target);*/
+	rgt_controller_set_target(&right_pid_info, -target);
 }
 
 void drivetrain_wait_until_at_target(uint32_t timeout) {
-	do {
+	while ((!rgt_controller_at_target(&right_pid_info) ||
+	        !rgt_controller_at_target(&left_pid_info)) &&
+	       timeout > 0) {
+
 		timeout -= 2;
 		delay(2);
-		//snprintf("%zu\n", timeout);
-	} while ((!rgt_controller_at_target(&right_pid_info) ||
-	       !rgt_controller_at_target(&left_pid_info)) &&
-		   timeout > 0);
-		   
+	}
 }
 
 double left_mg_get_pos(void) {
-	// Return average motor encoder position, accounting for 5:3 gear ratio from
-	// motor to wheel
+	// Return average motor encoder position, accounting for 5:3 gear ratio
+	// from motor to wheel
 	return rgt_mg_get_average_position(left_motors) * GEAR_RATIO;
 }
 double right_mg_get_pos(void) {
-	// Return average motor encoder position, accounting for 5:3 gear ratio from
-	// motor to wheel
+	// Return average motor encoder position, accounting for 5:3 gear ratio
+	// from motor to wheel
 	return rgt_mg_get_average_position(right_motors) * GEAR_RATIO;
 }
 
 double left_mg_controller(double target, double current, bool reset) {
-	static double integral;
-	prev_errorL = 0;
+	static double integral, prev_error = 0;
 
 	bool clear_integral = false;
 
-	double error = target-current;
-	if(target > 0){
-	if (error > ERROR_ACCUMULATION_THRESH)
+	double error = target - current;
+
+	if (fabs(error) > ERROR_ACCUMULATION_THRESH)
 		clear_integral = true;
-	}else{
-		if (-error > ERROR_ACCUMULATION_THRESH)
-		clear_integral = true;	
-	}
+
 
 	if (reset) {
-		prev_errorL = 0;
+		prev_error = 0;
 		clear_integral = true;
 	}
 
 	double voltage =
-	    pid(error, kP, kI, kD, &integral, prev_errorL, clear_integral);
+	    pid(error, kP, kI, kD, &integral, prev_error, clear_integral);
 
-	prev_errorL = error;
+	prev_error = error;
 
 	return voltage;
 }
 
 double right_mg_controller(double target, double current, bool reset) {
-	static double integral;
-	prev_errorR = 0;
+	static double integral, prev_error = 0;
 
 	bool clear_integral = false;
 	double error = target - current;
-	if(target > 0){
-		if (error > ERROR_ACCUMULATION_THRESH)
-			clear_integral = true;
-		}else{
-			if (-error > ERROR_ACCUMULATION_THRESH)
-			clear_integral = true;	
-		}
-	//if (error > ERROR_ACCUMULATION_THRESH)
-	//	clear_integral = true;
+
+	if (fabs(error) > ERROR_ACCUMULATION_THRESH)
+		clear_integral = true;
 
 	if (reset) {
-		prev_errorR = 0;
+		prev_error = 0;
 		clear_integral = true;
 	}
 
 	double voltage =
-	    pid(error, kP, kI, kD, &integral, prev_errorR, clear_integral);
+	    pid(error, kP, kI, kD, &integral, prev_error, clear_integral);
 
-	prev_errorR = error;
+	prev_error = error;
 
 	return voltage;
 }
