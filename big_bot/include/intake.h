@@ -11,13 +11,14 @@
  * control the intake. These functions serve as an API for the intake,
  * abstracting away specific information.
  */
-
+void intake_init(void);
 // Intake grabs ring
 void intake_in(void);
-
+void intake_half(void);
 // Intake releases ring
 void intake_out(void);
 
+void intake_stop(void);
 /**
  * @brief Intake operation controller
  *

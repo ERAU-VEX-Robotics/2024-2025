@@ -16,6 +16,9 @@
 void initialize() {
 	piston_init();
 	gui_init();
+	drivetrain_init();
+	intake_init();
+	conveyor_init();
 }
 
 /**
@@ -47,7 +50,55 @@ void competition_initialize() {}
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
-void autonomous() {}
+void autonomous() {
+	drivetrain_resume_pid_tasks();
+	drivetrain_move_straight(18);
+	conveyor_up();
+	intake_in();
+	delay(2000);
+	intake_half();
+	delay(2500);
+	conveyor_stop();
+	drivetrain_wait_until_at_target(250);
+	// delay(18000);
+	intake_stop();
+	drivetrain_turn_angle(-45);
+	drivetrain_wait_until_at_target(1500);
+	/*intake_in();
+	drivetrain_move_straight(20);
+	delay(3000);
+	intake_stop();
+	drivetrain_wait_until_at_target(1500);
+	drivetrain_turn_angle(45);
+	drivetrain_wait_until_at_target(1500);
+	drivetrain_move_straight(-3.8);
+	drivetrain_wait_until_at_target(1000);
+	piston_toggle();
+	conveyor_up();
+	intake_half();
+	delay(4000);
+	drivetrain_turn_angle(-180);
+	drivetrain_wait_until_at_target(1500);
+	drivetrain_move_straight(6);
+	drivetrain_wait_until_at_target(1000);
+	drivetrain_turn_angle(45);
+	drivetrain_wait_until_at_target(1500);
+	drivetrain_move_straight(20);
+	drivetrain_wait_until_at_target(1000);
+	intake_stop();
+	drivetrain_move_straight(-1);
+	drivetrain_wait_until_at_target(1000);
+	drivetrain_turn_angle(90);
+	drivetrain_wait_until_at_target(1500);
+	drivetrain_turn_angle(-90)
+	conveyer_stop();
+	drivetrain_move_straight(-1);
+	drivetrain_wait_until_at_target(1000);
+	piston_toggle();
+	*/
+	conveyor_stop();
+	intake_stop();
+}
 
 /**
  * Runs the operator control code. This function will be started in its own task
@@ -63,6 +114,7 @@ void autonomous() {}
  * task, not resume it from where it left off.
  */
 void opcontrol() {
+	drivetrain_suspend_pid_tasks();
 	while (true) {
 		intake_opcontrol(E_CONTROLLER_DIGITAL_R2, E_CONTROLLER_DIGITAL_R1);
 
@@ -73,4 +125,5 @@ void opcontrol() {
 		piston_opcontrol(E_CONTROLLER_DIGITAL_L1);
 		delay(20); // Run for 20 ms then update
 	}
+	drivetrain_delete_pid_tasks();
 }
