@@ -50,19 +50,19 @@ void competition_initialize() {}
  */
 void autonomous() {
 	drivetrain_resume_pid_tasks();
-	drivetrain_move_straight(24);
+	drivetrain_move_straight(18);
 	conveyor_up();
 	intake_in();
 	delay(2000);
 	intake_half();
 	delay(2500);
 	conveyor_stop();
-	drivetrain_wait_until_at_target(500);
+	drivetrain_wait_until_at_target(250);
 	//delay(18000);
 	intake_stop();
 	drivetrain_turn_angle(-45);
 	drivetrain_wait_until_at_target(1500);
-	intake_in();
+	/*intake_in();
 	drivetrain_move_straight(20);
 	delay(3000);
 	intake_stop();
@@ -77,11 +77,13 @@ void autonomous() {
 	delay(4000);
 	drivetrain_turn_angle(-180);
 	drivetrain_wait_until_at_target(1500);
+	drivetrain_move_straight(6);
+	drivetrain_wait_until_at_target(1000);
 	drivetrain_turn_angle(45);
 	drivetrain_wait_until_at_target(1500);	
 	drivetrain_move_straight(20);
 	drivetrain_wait_until_at_target(1000);
-	/*intake_stop();
+	intake_stop();
 	drivetrain_move_straight(-1);
 	drivetrain_wait_until_at_target(1000);
 	drivetrain_turn_angle(90);
@@ -92,6 +94,8 @@ void autonomous() {
 	drivetrain_wait_until_at_target(1000);	
 	piston_toggle();
 	*/
+	conveyor_stop();
+	intake_stop();
 }
 
 /**

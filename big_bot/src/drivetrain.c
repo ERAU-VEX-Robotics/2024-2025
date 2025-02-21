@@ -38,11 +38,12 @@ double right_mg_get_pos(void);
 double left_mg_controller(double target, double current, bool reset);
 double right_mg_controller(double target, double current, bool reset);
 
-static bool kP = 20;
+static bool kP = 2900;
 static bool kI = 1;
-static bool kD = 15;
+static bool kD = 25;
 
-static double prev_error = 0;
+static double prev_errorR = 0;
+static double prev_errorL = 0;
 /**
  * Gear Ratio on the drivetrain -  defined as:
  * # of teeth on the gears attached to the wheels /
@@ -51,8 +52,7 @@ static double prev_error = 0;
 static const double GEAR_RATIO = 36.0/60.0 ;
 
 static const double WHEEL_DIAMETER = 3.25;
-static const double BASE_WIDTH = 14.5;
-
+static const double BASE_WIDTH = 14;
 /**
  * Motor encoder position threshold within which the drivetrain's PID
  * controllers begin accumulating error i.e. the I part of the PID becomes
@@ -86,33 +86,51 @@ void drivetrain_opcontrol(controller_analog_e_t left,
 }
 
 void drivetrain_move_straight(double inches) {
-	kP = 290;
+	kP = 2900;
 	kI = 1;
 	kD = 25;
-
-	double target = inches * (WHEEL_DIAMETER / 2) * 180 / M_PI;
-	prev_error = 0;
+	//double target = (180 / M_PI) * (inches * (WHEEL_DIAMETER / 2));
+	double target = 900*GEAR_RATIO*(inches/(M_PI*WHEEL_DIAMETER));
+	//this is the proper function for distance
+	//it takes the inches you want to go, turn it into how many 
+	//revolutions you want to do, then turns that into how many 
+	//encoder counts does it need to do
+	prev_errorL = 0;
+	prev_errorR = 0;
 	rgt_mg_reset_positions(left_motors);
 	rgt_mg_reset_positions(right_motors);
-
 	rgt_controller_set_target(&left_pid_info, target);
 	rgt_controller_set_target(&right_pid_info, target);
 }
 
 void drivetrain_turn_angle(double angle) {
-	kP = 290;
+	kP = 29;
 	kI = 3;
 	kD = 25;
 
-	prev_error = 0;
-	double inches = angle  * BASE_WIDTH / 2;
-	double target = inches;// * WHEEL_DIAMETER / 2 ;
-
-	rgt_mg_reset_positions(left_motors);
+	prev_errorL = 0;
+	prev_errorR = 0;
+	//this is the proper function for distance
+	//it takes the angle, turns it into inches,
+	// then takes the inches you want to go, turn it into how many 
+	//revolutions you want to do, then turns that into how many 
+	//encoder counts does it need to do
+	if(angle >0 ){
+		double inches = ((angle)  * M_PI * BASE_WIDTH)/36;
+		double target = 90*GEAR_RATIO*(inches/(M_PI*WHEEL_DIAMETER));
+		rgt_mg_move_relative(left_motors,target,60);
+		rgt_mg_move_relative(right_motors,target,-60);
+	}else{
+		double inches = ((-angle)  * M_PI * BASE_WIDTH)/36;
+		double target = 90*GEAR_RATIO*(inches/(M_PI*WHEEL_DIAMETER));
+		rgt_mg_move_relative(left_motors,target,-60);
+		rgt_mg_move_relative(right_motors,target,60);
+	}
+	/*rgt_mg_reset_positions(left_motors);
 	rgt_mg_reset_positions(right_motors);
 
 	rgt_controller_set_target(&left_pid_info, target);
-	rgt_controller_set_target(&right_pid_info, -target);
+	rgt_controller_set_target(&right_pid_info, -target);*/
 }
 
 void drivetrain_wait_until_at_target(uint32_t timeout) {
@@ -139,48 +157,57 @@ double right_mg_get_pos(void) {
 
 double left_mg_controller(double target, double current, bool reset) {
 	static double integral;
-	prev_error = 0;
+	prev_errorL = 0;
 
 	bool clear_integral = false;
 
-	double error = target - current;
-
+	double error = target-current;
+	if(target > 0){
 	if (error > ERROR_ACCUMULATION_THRESH)
 		clear_integral = true;
+	}else{
+		if (-error > ERROR_ACCUMULATION_THRESH)
+		clear_integral = true;	
+	}
 
 	if (reset) {
-		prev_error = 0;
+		prev_errorL = 0;
 		clear_integral = true;
 	}
 
 	double voltage =
-	    pid(error, kP, kI, kD, &integral, prev_error, clear_integral);
+	    pid(error, kP, kI, kD, &integral, prev_errorL, clear_integral);
 
-	prev_error = error;
+	prev_errorL = error;
 
 	return voltage;
 }
 
 double right_mg_controller(double target, double current, bool reset) {
 	static double integral;
-	prev_error = 0;
+	prev_errorR = 0;
 
 	bool clear_integral = false;
-
 	double error = target - current;
-
-	if (error > ERROR_ACCUMULATION_THRESH)
-		clear_integral = true;
+	if(target > 0){
+		if (error > ERROR_ACCUMULATION_THRESH)
+			clear_integral = true;
+		}else{
+			if (-error > ERROR_ACCUMULATION_THRESH)
+			clear_integral = true;	
+		}
+	//if (error > ERROR_ACCUMULATION_THRESH)
+	//	clear_integral = true;
 
 	if (reset) {
-		prev_error = 0;
+		prev_errorR = 0;
 		clear_integral = true;
 	}
 
 	double voltage =
-	    pid(error, kP, kI, kD, &integral, prev_error, clear_integral);
+	    pid(error, kP, kI, kD, &integral, prev_errorR, clear_integral);
 
-	prev_error = error;
+	prev_errorR = error;
 
 	return voltage;
 }
