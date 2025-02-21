@@ -39,9 +39,9 @@ double right_mg_get_pos(void);
 double left_mg_controller(double target, double current, bool reset);
 double right_mg_controller(double target, double current, bool reset);
 
-static uint16_t kP = 20;
+static uint16_t kP = 10;
 static uint16_t kI = 1;
-static uint16_t kD = 15;
+static uint16_t kD = 10;
 
 /**
  * Gear Ratio on the drivetrain -  defined as:
@@ -93,11 +93,11 @@ void drivetrain_opcontrol(controller_analog_e_t left,
 }
 
 void drivetrain_move_straight(double inches) {
-	kP = 2900;
+	kP = 9;
 	kI = 1;
-	kD = 25;
+	kD = 7;
 
-	double target = inches / (WHEEL_DIAMETER / 2) * 180 / M_PI;
+	double target = (180 / M_PI) * (inches / (WHEEL_DIAMETER ));
 	rgt_mg_reset_positions(left_motors);
 	rgt_mg_reset_positions(right_motors);
 	rgt_controller_reset(&left_pid_info);
@@ -108,12 +108,12 @@ void drivetrain_move_straight(double inches) {
 }
 
 void drivetrain_turn_angle(double angle) {
-	kP = 29;
-	kI = 3;
-	kD = 25;
+	kP = 20;
+	kI = 1;
+	kD = 7;
 
-	double inches = angle * BASE_WIDTH / 2;
-	double target = inches / (WHEEL_DIAMETER / 2) * 180 / M_PI;
+	double inches = angle * (BASE_WIDTH / 2);// the (PI/180) was removed
+	double target = inches / (WHEEL_DIAMETER );// the (180/PI) was removed
 
 	rgt_mg_reset_positions(left_motors);
 	rgt_mg_reset_positions(right_motors);
@@ -129,7 +129,6 @@ void drivetrain_wait_until_at_target(uint32_t timeout) {
 	while ((!rgt_controller_at_target(&right_pid_info) ||
 	        !rgt_controller_at_target(&left_pid_info)) &&
 	       timeout > 0) {
-
 		timeout -= 2;
 		delay(2);
 	}
