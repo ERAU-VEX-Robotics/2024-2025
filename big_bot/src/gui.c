@@ -94,6 +94,7 @@ void gui_nav_init(void) {
 	lv_obj_add_style(btn_main_to_auton, &main_style, LV_STATE_DEFAULT);
 	lv_obj_add_style(btn_main_to_auton, &btn_style, LV_STATE_DEFAULT);
 	lv_obj_add_style(btn_main_to_auton, &btn_pr_style, LV_STATE_PRESSED);
+	lv_obj_set_size(btn_main_to_auton, 150, 50);
 
 	lv_obj_t *lbl = lv_label_create(btn_main_to_auton);
 	lv_obj_align(lbl, LV_ALIGN_CENTER, 0, 0);
@@ -106,6 +107,7 @@ void gui_nav_init(void) {
 	lv_obj_add_style(btn_auton_to_main, &main_style, LV_STATE_DEFAULT);
 	lv_obj_add_style(btn_auton_to_main, &btn_style, LV_STATE_DEFAULT);
 	lv_obj_add_style(btn_auton_to_main, &btn_pr_style, LV_STATE_PRESSED);
+	lv_obj_set_size(btn_auton_to_main, 150, 50);
 
 	lbl = lv_label_create(btn_auton_to_main);
 	lv_obj_align(lbl, LV_ALIGN_CENTER, 0, 0);
@@ -174,6 +176,7 @@ void gui_style_init(void) {
 	lv_style_init(&main_style);
 	lv_style_set_bg_color(&main_style, COLOR_NORMAL_BG);
 	lv_style_set_text_color(&main_style, COLOR_TEXT);
+	lv_style_set_text_font(&main_style, &lv_font_montserrat_16);
 
 	// Set up the button style with a different border color, lower opacity, and
 	// round corners
@@ -182,7 +185,6 @@ void gui_style_init(void) {
 	lv_style_set_border_width(&btn_style, 2);
 	lv_style_set_bg_opa(&btn_style, LV_OPA_50);
 	lv_style_set_radius(&btn_style, 30);
-	lv_style_set_pad_all(&btn_style, 10);
 
 	// Make pressed buttons darker and more opaque
 	lv_style_init(&btn_pr_style);
@@ -198,7 +200,8 @@ void gui_style_init(void) {
 	 * some of the padding parameters
 	 */
 	lv_style_init(&btnm_bg_style);
-	lv_style_set_border_color(&btn_style, COLOR_BTN_BORDER);
-	lv_style_set_border_width(&btn_style, 2);
-	lv_style_set_bg_opa(&btnm_bg_style, LV_OPA_10);
+	lv_style_set_border_color(&btnm_bg_style, COLOR_BTN_BORDER);
+	lv_style_set_border_width(&btnm_bg_style, 2);
+	lv_style_set_bg_opa(&btnm_bg_style, LV_OPA_20);
+	lv_style_set_border_opa(&btnm_bg_style, LV_OPA_50);
 }
