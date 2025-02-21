@@ -1,6 +1,7 @@
 #include "drivetrain.h"
 
 #include "pros/misc.h"
+#include "pros/motors.h"
 #include "pros/rtos.h"
 
 #include "ringtail/controller.h"
@@ -38,17 +39,16 @@ double right_mg_get_pos(void);
 double left_mg_controller(double target, double current, bool reset);
 double right_mg_controller(double target, double current, bool reset);
 
-static bool kP = 20;
-static bool kI = 1;
-static bool kD = 15;
+static uint16_t kP = 20;
+static uint16_t kI = 1;
+static uint16_t kD = 15;
 
-static double prev_error = 0;
 /**
  * Gear Ratio on the drivetrain -  defined as:
  * # of teeth on the gears attached to the wheels /
  * # of teeth on the gears attached to the sensor - in this case the motor
  */
-static const double GEAR_RATIO = 36.0/60.0 ;
+static const double GEAR_RATIO = 36.0 / 60.0;
 
 static const double WHEEL_DIAMETER = 3.25;
 static const double BASE_WIDTH = 14.5;
@@ -76,6 +76,14 @@ void drivetrain_init(void) {
 	right_pid_task = rgt_controller_create(
 	    &right_pid_info, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT,
 	    "Drive Right Controller");
+
+	rgt_mg_set_gearing(left_motors, E_MOTOR_GEAR_GREEN);
+	rgt_mg_set_gearing(right_motors, E_MOTOR_GEAR_GREEN);
+	rgt_mg_set_encoder_units(left_motors, E_MOTOR_ENCODER_DEGREES);
+	rgt_mg_set_encoder_units(right_motors, E_MOTOR_ENCODER_DEGREES);
+
+	rgt_mg_set_brake_mode(left_motors, E_MOTOR_BRAKE_COAST);
+	rgt_mg_set_brake_mode(right_motors, E_MOTOR_BRAKE_COAST);
 }
 
 void drivetrain_opcontrol(controller_analog_e_t left,
@@ -90,10 +98,11 @@ void drivetrain_move_straight(double inches) {
 	kI = 1;
 	kD = 25;
 
-	double target = inches * (WHEEL_DIAMETER / 2) * 180 / M_PI;
-	prev_error = 0;
+	double target = inches / (WHEEL_DIAMETER / 2) * 180 / M_PI;
 	rgt_mg_reset_positions(left_motors);
 	rgt_mg_reset_positions(right_motors);
+	rgt_controller_reset(&left_pid_info);
+	rgt_controller_reset(&right_pid_info);
 
 	rgt_controller_set_target(&left_pid_info, target);
 	rgt_controller_set_target(&right_pid_info, target);
@@ -104,48 +113,48 @@ void drivetrain_turn_angle(double angle) {
 	kI = 3;
 	kD = 25;
 
-	prev_error = 0;
-	double inches = angle  * BASE_WIDTH / 2;
-	double target = inches;// * WHEEL_DIAMETER / 2 ;
+	double inches = angle * BASE_WIDTH / 2;
+	double target = inches / (WHEEL_DIAMETER / 2) * 180 / M_PI;
 
 	rgt_mg_reset_positions(left_motors);
 	rgt_mg_reset_positions(right_motors);
+
+	rgt_controller_reset(&left_pid_info);
+	rgt_controller_reset(&right_pid_info);
 
 	rgt_controller_set_target(&left_pid_info, target);
 	rgt_controller_set_target(&right_pid_info, -target);
 }
 
 void drivetrain_wait_until_at_target(uint32_t timeout) {
-	do {
+	while ((!rgt_controller_at_target(&right_pid_info) ||
+	        !rgt_controller_at_target(&left_pid_info)) &&
+	       timeout > 0) {
+
 		timeout -= 2;
 		delay(2);
-		//snprintf("%zu\n", timeout);
-	} while ((!rgt_controller_at_target(&right_pid_info) ||
-	       !rgt_controller_at_target(&left_pid_info)) &&
-		   timeout > 0);
-		   
+	}
 }
 
 double left_mg_get_pos(void) {
-	// Return average motor encoder position, accounting for 5:3 gear ratio from
-	// motor to wheel
+	// Return average motor encoder position, accounting for 5:3 gear ratio
+	// from motor to wheel
 	return rgt_mg_get_average_position(left_motors) * GEAR_RATIO;
 }
 double right_mg_get_pos(void) {
-	// Return average motor encoder position, accounting for 5:3 gear ratio from
-	// motor to wheel
+	// Return average motor encoder position, accounting for 5:3 gear ratio
+	// from motor to wheel
 	return rgt_mg_get_average_position(right_motors) * GEAR_RATIO;
 }
 
 double left_mg_controller(double target, double current, bool reset) {
-	static double integral;
-	prev_error = 0;
+	static double integral, prev_error = 0;
 
 	bool clear_integral = false;
 
 	double error = target - current;
 
-	if (error > ERROR_ACCUMULATION_THRESH)
+	if (fabs(error) > ERROR_ACCUMULATION_THRESH)
 		clear_integral = true;
 
 	if (reset) {
@@ -162,14 +171,13 @@ double left_mg_controller(double target, double current, bool reset) {
 }
 
 double right_mg_controller(double target, double current, bool reset) {
-	static double integral;
-	prev_error = 0;
+	static double integral, prev_error = 0;
 
 	bool clear_integral = false;
 
 	double error = target - current;
 
-	if (error > ERROR_ACCUMULATION_THRESH)
+	if (fabs(error) > ERROR_ACCUMULATION_THRESH)
 		clear_integral = true;
 
 	if (reset) {

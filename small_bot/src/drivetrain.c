@@ -37,9 +37,9 @@ double right_mg_get_pos(void);
 double left_mg_controller(double target, double current, bool reset);
 double right_mg_controller(double target, double current, bool reset);
 
-static bool kP = 0;
-static bool kI = 0;
-static bool kD = 0;
+static uint16_t kP = 0;
+static uint16_t kI = 0;
+static uint16_t kD = 0;
 
 /**
  * Gear Ratio on the drivetrain -  defined as:
@@ -88,7 +88,7 @@ void drivetrain_move_straight(double inches) {
 	kI = 5;
 	kD = 10;
 
-	double target = inches * WHEEL_DIAMETER / 2 * 180 / M_PI;
+	double target = inches / (WHEEL_DIAMETER / 2) * 180 / M_PI;
 	rgt_controller_set_target(&left_pid_info, target);
 	rgt_controller_set_target(&right_pid_info, target);
 }
@@ -99,7 +99,7 @@ void drivetrain_turn_angle(double angle) {
 	kD = 10;
 
 	double inches = angle * M_PI / 180 * BASE_WIDTH / 2;
-	double target = inches * WHEEL_DIAMETER / 2 * 180 / M_PI;
+	double target = inches / (WHEEL_DIAMETER / 2) * 180 / M_PI;
 	rgt_controller_set_target(&left_pid_info, target);
 	rgt_controller_set_target(&right_pid_info, -target);
 }
