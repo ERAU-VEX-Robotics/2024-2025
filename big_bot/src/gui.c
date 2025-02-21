@@ -90,22 +90,24 @@ void show_main_page(lv_event_t *e) {
 // Initialize the navigation buttons
 void gui_nav_init(void) {
 	lv_obj_t *btn_main_to_auton = lv_btn_create(main_window);
-	lv_obj_add_event_cb(btn_main_to_auton, show_auton_page, LV_STATE_PRESSED,
+	lv_obj_add_event_cb(btn_main_to_auton, show_auton_page, LV_EVENT_CLICKED,
 	                    NULL);
-	lv_obj_align(btn_main_to_auton, LV_ALIGN_TOP_LEFT, 0, 0);
-	lv_obj_add_style(btn_main_to_auton, &btn_style, LV_STATE_DEFAULT);
-	lv_obj_add_style(btn_main_to_auton, &btn_pr_style, LV_STATE_PRESSED);
+	lv_obj_align(btn_main_to_auton, LV_ALIGN_TOP_LEFT, 20, 20);
+	lv_obj_add_style(btn_main_to_auton, &main_style, LV_STATE_DEFAULT);
+	// lv_obj_add_style(btn_main_to_auton, &btn_style, LV_STATE_DEFAULT);
+	// lv_obj_add_style(btn_main_to_auton, &btn_pr_style, LV_STATE_PRESSED);
 
 	lv_obj_t *lbl = lv_label_create(btn_main_to_auton);
 	lv_obj_align(lbl, LV_ALIGN_CENTER, 0, 0);
 	lv_label_set_text(lbl, "Auton Menu");
 
 	lv_obj_t *btn_auton_to_main = lv_btn_create(auton_window);
-	lv_obj_add_event_cb(btn_auton_to_main, show_main_page, LV_STATE_PRESSED,
+	lv_obj_add_event_cb(btn_auton_to_main, show_main_page, LV_EVENT_CLICKED,
 	                    NULL);
-	lv_obj_align(btn_auton_to_main, LV_ALIGN_TOP_LEFT, 0, 0);
-	lv_obj_add_style(btn_auton_to_main, &btn_style, LV_STATE_DEFAULT);
-	lv_obj_add_style(btn_auton_to_main, &btn_pr_style, LV_STATE_PRESSED);
+	lv_obj_align(btn_auton_to_main, LV_ALIGN_TOP_LEFT, 20, 20);
+	lv_obj_add_style(btn_auton_to_main, &main_style, LV_STATE_DEFAULT);
+	// lv_obj_add_style(btn_auton_to_main, &btn_style, LV_STATE_DEFAULT);
+	// lv_obj_add_style(btn_auton_to_main, &btn_pr_style, LV_STATE_PRESSED);
 
 	lbl = lv_label_create(btn_auton_to_main);
 	lv_obj_align(lbl, LV_ALIGN_CENTER, 0, 0);
@@ -119,15 +121,17 @@ void gui_auton_init(void) {
 	lv_obj_align(auton_btnm, LV_ALIGN_RIGHT_MID, 0, 0);
 	lv_obj_set_size(auton_btnm, 225, 150);
 	lv_btnmatrix_set_map(auton_btnm, auton_select_options);
-	lv_obj_add_style(auton_btnm, &btn_style, LV_PART_MAIN | LV_STATE_DEFAULT);
-	lv_obj_add_style(auton_btnm, &btnm_btn_style,
-	                 LV_PART_ITEMS | LV_STATE_DEFAULT);
-	lv_obj_add_style(auton_btnm, &btnm_btn_pr_style,
-	                 LV_PART_ITEMS | LV_STATE_PRESSED);
-	lv_obj_add_event_cb(auton_btnm, update_auton_id, LV_STATE_PRESSED, NULL);
+	lv_obj_add_style(auton_btnm, &main_style,
+	                 LV_PART_MAIN | LV_PART_ITEMS | LV_STATE_DEFAULT);
+	// lv_obj_add_style(auton_btnm, &btn_style, LV_PART_MAIN |
+	// LV_STATE_DEFAULT); lv_obj_add_style(auton_btnm, &btnm_btn_style,
+	//                  LV_PART_ITEMS | LV_STATE_DEFAULT);
+	// lv_obj_add_style(auton_btnm, &btnm_btn_pr_style,
+	//                  LV_PART_ITEMS | LV_STATE_PRESSED);
+	lv_obj_add_event_cb(auton_btnm, update_auton_id, LV_EVENT_CLICKED, NULL);
 
 	auton_selected_lbl = lv_label_create(auton_window);
-	lv_obj_align(auton_selected_lbl, LV_ALIGN_BOTTOM_LEFT, 0, 0);
+	lv_obj_align(auton_selected_lbl, LV_ALIGN_BOTTOM_LEFT, 20, -20);
 	lv_label_set_text(auton_selected_lbl, "No Auton Selected");
 }
 
@@ -178,13 +182,14 @@ void gui_style_init(void) {
 	lv_style_init(&btn_style);
 	lv_style_set_border_color(&btn_style, COLOR_BTN_BORDER);
 	lv_style_set_border_width(&btn_style, 2);
-	lv_style_set_border_opa(&btn_style, 120);
+	lv_style_set_opa(&btn_style, LV_OPA_50);
+	lv_style_set_text_opa(&btn_style, LV_OPA_100);
 	lv_style_set_radius(&btn_style, 30);
 
 	// Make pressed buttons darker and more opaque
 	lv_style_init(&btn_pr_style);
 	lv_style_set_bg_color(&btn_pr_style, COLOR_BTN_PRESSED);
-	lv_style_set_border_opa(&btn_pr_style, 200);
+	lv_style_set_opa(&btn_pr_style, 200);
 
 	/**
 	 * LVGL button matrixes are groups of buttons that all call the same
@@ -194,12 +199,12 @@ void gui_style_init(void) {
 	 * So, to make the button matrix style, we take the button style and adjust
 	 * some of the padding parameters
 	 */
-	lv_style_init(&btnm_btn_pr_style);
-	lv_style_set_border_width(&btnm_btn_pr_style, 0);
-	lv_style_set_pad_all(&btnm_btn_pr_style, 10);
+	lv_style_init(&btnm_bg_style);
+	lv_style_set_border_width(&btnm_bg_style, 0);
+	lv_style_set_bg_opa(&btnm_bg_style, LV_OPA_10);
 
-	// Setting up the button matrix pressed style the same as the normal button
-	// matrix style
+	// Setting up the button matrix pressed style the same as the normal
+	// button matrix style
 	lv_style_init(&btnm_btn_pr_style);
 	lv_style_set_border_width(&btnm_btn_pr_style, 0);
 	lv_style_set_pad_all(&btnm_btn_pr_style, 10);

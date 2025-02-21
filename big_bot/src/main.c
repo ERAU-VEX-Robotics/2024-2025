@@ -2,6 +2,7 @@
 #include "arm.h"
 #include "conveyor.h"
 #include "drivetrain.h"
+#include "gui.h"
 #include "intake.h"
 #include "piston.h"
 #include "pros/misc.h"
@@ -12,7 +13,10 @@
  * All other competition modes are blocked by initialize; it is recommended
  * to keep execution time for this mode under a few seconds.
  */
-void initialize() { piston_init(); }
+void initialize() {
+	piston_init();
+	gui_init();
+}
 
 /**
  * Runs while the robot is in the disabled state of Field Management System or
