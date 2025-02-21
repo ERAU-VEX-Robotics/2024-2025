@@ -2,6 +2,7 @@
 #include "arm.h"
 #include "conveyor.h"
 #include "drivetrain.h"
+#include "gui.h"
 #include "intake.h"
 #include "piston.h"
 #include "pros/misc.h"
@@ -13,10 +14,11 @@
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
+	piston_init();
+	gui_init();
 	drivetrain_init();
 	intake_init();
 	conveyor_init();
-	piston_init();
 }
 
 /**
@@ -58,7 +60,7 @@ void autonomous() {
 	delay(2500);
 	conveyor_stop();
 	drivetrain_wait_until_at_target(250);
-	//delay(18000);
+	// delay(18000);
 	intake_stop();
 	drivetrain_turn_angle(-45);
 	drivetrain_wait_until_at_target(1500);
@@ -80,7 +82,7 @@ void autonomous() {
 	drivetrain_move_straight(6);
 	drivetrain_wait_until_at_target(1000);
 	drivetrain_turn_angle(45);
-	drivetrain_wait_until_at_target(1500);	
+	drivetrain_wait_until_at_target(1500);
 	drivetrain_move_straight(20);
 	drivetrain_wait_until_at_target(1000);
 	intake_stop();
@@ -91,7 +93,7 @@ void autonomous() {
 	drivetrain_turn_angle(-90)
 	conveyer_stop();
 	drivetrain_move_straight(-1);
-	drivetrain_wait_until_at_target(1000);	
+	drivetrain_wait_until_at_target(1000);
 	piston_toggle();
 	*/
 	conveyor_stop();
