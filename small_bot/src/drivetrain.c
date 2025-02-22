@@ -104,6 +104,15 @@ void drivetrain_turn_angle(double angle) {
 	rgt_controller_set_target(&right_pid_info, -target);
 }
 
+void drivetrain_wait_until_at_target(uint32_t timeout) {
+	while ((!rgt_controller_at_target(&left_pid_info) ||
+	        !rgt_controller_at_target(&right_pid_info)) &&
+	       timeout > 0) {
+		delay(10);
+		timeout -= 10;
+	}
+}
+
 double left_mg_get_pos(void) {
 	// Return average motor encoder position, accounting for 5:3 gear ratio from
 	// motor to wheel
