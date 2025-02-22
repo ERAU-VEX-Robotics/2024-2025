@@ -169,3 +169,21 @@ double right_mg_controller(double target, double current, bool reset) {
 
 	return voltage;
 }
+
+// Suspend the drivetrain PID tasks
+void drivetrain_suspend_pid_tasks(void) {
+	task_suspend(left_pid_task);
+	task_suspend(right_pid_task);
+}
+
+// Resume the drivetrain PID tasks
+void drivetrain_resume_pid_tasks(void) {
+	task_resume(left_pid_task);
+	task_resume(right_pid_task);
+}
+
+// Delete the drivetrain PID tasks
+void drivetrain_delete_pid_tasks(void) {
+	task_delete(left_pid_task);
+	task_delete(right_pid_task);
+}
