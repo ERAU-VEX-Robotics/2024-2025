@@ -93,7 +93,7 @@ void drivetrain_opcontrol(controller_analog_e_t left,
 }
 
 void drivetrain_move_straight(double inches) {
-	kP = 9;
+	kP = 11;
 	kI = 1;
 	kD = 7;
 
@@ -108,7 +108,7 @@ void drivetrain_move_straight(double inches) {
 }
 
 void drivetrain_turn_angle(double angle) {
-	kP = 20;
+	kP = 22;
 	kI = 1;
 	kD = 7;
 

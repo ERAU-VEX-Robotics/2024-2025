@@ -55,40 +55,54 @@ void autonomous() {
 	auton_id = SKILLS;
 	switch (auton_id) {
 	case SKILLS:
-		drivetrain_move_straight(30);
+		drivetrain_move_straight(30); // Move to ring 1
 		delay(500);
 		conveyor_up();
-		intake_in();
+		intake_in(); // Intake ring 1
 		drivetrain_wait_until_at_target(2000);
-		drivetrain_turn_angle(290);
+		drivetrain_turn_angle(-80); //290, turn to ring 2
 		delay(1000);
 		conveyor_stop();
-		drivetrain_wait_until_at_target(2000);
-		intake_in();
-		drivetrain_move_straight(32);
+		delay(1000);
+		drivetrain_wait_until_at_target(500);
+		delay(1000);
+		intake_in(); // intake ring 2
+		delay(1000);
+		drivetrain_move_straight(36); // move to ring 2
 		delay(500);
 		drivetrain_wait_until_at_target(3000);
 		//
-		drivetrain_turn_angle(-315);
+		delay(500);
+		drivetrain_turn_angle(100); //-315, -325, turn to goal
 		intake_stop();
 		drivetrain_wait_until_at_target(1500);
-		drivetrain_move_straight(-24);
-		drivetrain_wait_until_at_target(1000);
-		piston_toggle();
-		drivetrain_move_straight(-30);
+		drivetrain_move_straight(-30); //-24, move to goal
+		drivetrain_wait_until_at_target(1500);
+		piston_toggle(); // take goal
+		drivetrain_move_straight(-30); // move to set up for goal placement
 		drivetrain_wait_until_at_target(2500);	
-		drivetrain_turn_angle(-400); 
+		drivetrain_turn_angle(90); //-400 , turn to place goal
 		drivetrain_wait_until_at_target(1500);	
-		conveyor_up();
+
+		delay(500);
+		drivetrain_move_straight(2);
+		drivetrain_wait_until_at_target(1000);
+		delay(500);
+		conveyor_up(); //place rings on goal
 		intake_half();
-		delay(4000);			
-		drivetrain_move_straight(-36);
+		delay(5000); // 4000	
+		
+		drivetrain_move_straight(-38); //-36 move to place goal
 		drivetrain_wait_until_at_target(2500);
 		intake_stop();
 		conveyor_down();
-		piston_toggle();	
-		drivetrain_move_straight(24);
+		piston_toggle(); // release goal	
+		drivetrain_move_straight(24); // back away 
 		drivetrain_wait_until_at_target(2500);
+		//
+		conveyor_stop();
+		drivetrain_move_straight(1); //Attempt to stop moving
+		drivetrain_wait_until_at_target(1000); 
 		break;
 	case MATCH:
 		break;
