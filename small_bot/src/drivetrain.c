@@ -89,6 +89,13 @@ void drivetrain_move_straight(double inches) {
 	kD = 10;
 
 	double target = inches / (WHEEL_DIAMETER / 2) * 180 / M_PI;
+
+	rgt_mg_reset_positions(left_motors);
+	rgt_mg_reset_positions(right_motors);
+
+	rgt_controller_reset(&left_pid_info);
+	rgt_controller_reset(&right_pid_info);
+
 	rgt_controller_set_target(&left_pid_info, target);
 	rgt_controller_set_target(&right_pid_info, target);
 }
@@ -100,8 +107,24 @@ void drivetrain_turn_angle(double angle) {
 
 	double inches = angle * M_PI / 180 * BASE_WIDTH / 2;
 	double target = inches / (WHEEL_DIAMETER / 2) * 180 / M_PI;
+
+	rgt_mg_reset_positions(left_motors);
+	rgt_mg_reset_positions(right_motors);
+
+	rgt_controller_reset(&left_pid_info);
+	rgt_controller_reset(&right_pid_info);
+
 	rgt_controller_set_target(&left_pid_info, target);
 	rgt_controller_set_target(&right_pid_info, -target);
+}
+
+void drivetrain_wait_until_at_target(uint32_t timeout) {
+	while ((!rgt_controller_at_target(&left_pid_info) ||
+	        !rgt_controller_at_target(&right_pid_info)) &&
+	       timeout > 0) {
+		delay(10);
+		timeout -= 10;
+	}
 }
 
 double left_mg_get_pos(void) {
@@ -122,7 +145,7 @@ double left_mg_controller(double target, double current, bool reset) {
 
 	double error = target - current;
 
-	if (error > ERROR_ACCUMULATION_THRESH)
+	if (fabs(error) > ERROR_ACCUMULATION_THRESH)
 		clear_integral = true;
 
 	if (reset) {
@@ -145,7 +168,7 @@ double right_mg_controller(double target, double current, bool reset) {
 
 	double error = target - current;
 
-	if (error > ERROR_ACCUMULATION_THRESH)
+	if (fabs(error) > ERROR_ACCUMULATION_THRESH)
 		clear_integral = true;
 
 	if (reset) {
@@ -159,4 +182,22 @@ double right_mg_controller(double target, double current, bool reset) {
 	prev_error = error;
 
 	return voltage;
+}
+
+// Suspend the drivetrain PID tasks
+void drivetrain_suspend_pid_tasks(void) {
+	task_suspend(left_pid_task);
+	task_suspend(right_pid_task);
+}
+
+// Resume the drivetrain PID tasks
+void drivetrain_resume_pid_tasks(void) {
+	task_resume(left_pid_task);
+	task_resume(right_pid_task);
+}
+
+// Delete the drivetrain PID tasks
+void drivetrain_delete_pid_tasks(void) {
+	task_delete(left_pid_task);
+	task_delete(right_pid_task);
 }
