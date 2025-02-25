@@ -74,7 +74,7 @@ int32_t rgt_mg_brake(const rgt_motor_group mg);
  * @return 1 if all motor operations were successful, PROS_ERR otherwise
  * Basically just returns what motor_move does.
  */
-int32_t rgt_mg_move(const rgt_motor_group mg, const int8_t voltage);
+int32_t rgt_mg_move(const rgt_motor_group mg, const int32_t voltage);
 
 /**
  * @brief Sets the absolute position for all motors to move to

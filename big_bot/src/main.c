@@ -136,7 +136,7 @@ void opcontrol() {
 
 		conveyor_opcontrol(E_CONTROLLER_DIGITAL_L2, E_CONTROLLER_DIGITAL_A);
 		drivetrain_opcontrol(E_CONTROLLER_ANALOG_LEFT_Y,
-		                     E_CONTROLLER_ANALOG_RIGHT_Y);
+		                     E_CONTROLLER_ANALOG_LEFT_X);
 		// arm_opcontrol(E_CONTROLLER_DIGITAL_UP, E_CONTROLLER_DIGITAL_DOWN);
 		piston_opcontrol(E_CONTROLLER_DIGITAL_L1);
 		delay(20); // Run for 20 ms then update
