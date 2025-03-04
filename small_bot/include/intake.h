@@ -24,6 +24,8 @@ void intake_in(void);
 // Intake releases ring
 void intake_out(void);
 
+void intake_stop(void);
+
 /**
  * @brief Intake operation controller
  *

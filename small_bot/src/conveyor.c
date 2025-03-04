@@ -11,11 +11,13 @@
  * conveyor
  */
 
-static rgt_motor_group conveyor_run = {8};
+static rgt_motor_group conveyor_run = {-8};
 
 void conveyor_up(void) { rgt_mg_move(conveyor_run, 127); }
 
 void conveyor_down(void) { rgt_mg_move(conveyor_run, -127); }
+
+void conveyor_stop(void) { rgt_mg_move(conveyor_run, 0); }
 
 void conveyor_opcontrol(controller_digital_e_t up_button,
                         controller_digital_e_t down_button) {
@@ -25,6 +27,6 @@ void conveyor_opcontrol(controller_digital_e_t up_button,
 		conveyor_down();
 	} else {
 		// Turn off if no inputs
-		rgt_mg_move(conveyor_run, 0);
+		conveyor_stop();
 	}
 }

@@ -12,7 +12,7 @@
  */
 
 static rgt_motor_group intake_pivot = {8};
-static rgt_motor_group intake_motors = {-9};
+static rgt_motor_group intake_motors = {9};
 
 void intake_up(void) {
 	// rgt_mg_move(intake_pivot, 127);  // todo fix voltages
@@ -25,6 +25,8 @@ void intake_down() {
 void intake_in() { rgt_mg_move(intake_motors, 127); }
 
 void intake_out() { rgt_mg_move(intake_motors, -127); }
+
+void intake_stop() { rgt_mg_move(intake_motors, 0); }
 
 void intake_opcontrol(controller_digital_e_t up_button,
                       controller_digital_e_t down_button,
