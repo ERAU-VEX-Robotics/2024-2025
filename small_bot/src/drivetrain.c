@@ -59,9 +59,6 @@ static const double BASE_WIDTH = 11.5;
  */
 static const double ERROR_ACCUMULATION_THRESH = 50;
 
-static const double OFFSET_VOLTAGE_THRESHOLD = 10;
-static const double OFFSET_VOLTAGE = 600;
-
 void drivetrain_init(void) {
 	left_mutex = mutex_create();
 	right_mutex = mutex_create();
@@ -160,11 +157,6 @@ double left_mg_controller(double target, double current, bool reset) {
 	double voltage =
 	    pid(error, kP, kI, kD, &integral, prev_error, clear_integral);
 
-	if (voltage > OFFSET_VOLTAGE_THRESHOLD)
-		voltage += OFFSET_VOLTAGE;
-	else if (voltage < -OFFSET_VOLTAGE_THRESHOLD)
-		voltage -= OFFSET_VOLTAGE;
-
 	printf("error: %lf; voltage: %lf\n", error, voltage);
 
 	prev_error = error;
@@ -189,11 +181,6 @@ double right_mg_controller(double target, double current, bool reset) {
 
 	double voltage =
 	    pid(error, kP, kI, kD, &integral, prev_error, clear_integral);
-
-	if (voltage > OFFSET_VOLTAGE_THRESHOLD)
-		voltage += OFFSET_VOLTAGE + 200;
-	else if (voltage < OFFSET_VOLTAGE_THRESHOLD)
-		voltage -= OFFSET_VOLTAGE - 300;
 
 	printf("error: %lf; voltage: %lf\n", error, voltage);
 
