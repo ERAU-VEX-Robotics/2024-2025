@@ -16,7 +16,7 @@
  */
 
 // Motor groups for each side of the drivetrain
-static rgt_motor_group left_motors = {-11, -12, -13};
+static rgt_motor_group left_motors = {-11, -17, -13};
 static rgt_motor_group right_motors = {14, 15, 16};
 
 /**

@@ -64,26 +64,23 @@ void autonomous() {
 
 		intake_in();
 
-		drivetrain_move_straight(-72);
+		drivetrain_move_straight(-20);
 		drivetrain_wait_until_at_target(300);
 
 		drivetrain_move_straight(1);
 		drivetrain_wait_until_at_target(1500);
 
-		drivetrain_move_straight(36);
-		drivetrain_wait_until_at_target(2000);
-
-		drivetrain_move_straight(-10);
-		drivetrain_wait_until_at_target(1500);
-
-		drivetrain_turn_angle(-80);
+		drivetrain_move_straight(40);
 		drivetrain_wait_until_at_target(2000);
 
 		drivetrain_move_straight(-14);
 		drivetrain_wait_until_at_target(1500);
 
-		drivetrain_turn_angle(20);
+		drivetrain_turn_angle(-90);
 		drivetrain_wait_until_at_target(2000);
+
+		drivetrain_move_straight(-14);
+		drivetrain_wait_until_at_target(1500);
 
 		drivetrain_move_straight(-8);
 		drivetrain_wait_until_at_target(1500);
