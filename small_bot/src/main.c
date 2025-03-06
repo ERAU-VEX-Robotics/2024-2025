@@ -52,28 +52,26 @@ void competition_initialize() {}
  */
 void autonomous() {
 	drivetrain_resume_pid_tasks();
-
+	auton_id=SKILLS;
 	switch (auton_id) {
 
 	case MATCH:
 		break;
 	case SKILLS:
 
-		drivetrain_move_straight(16);
-		drivetrain_wait_until_at_target(1500);
+		drivetrain_move_straight(25);
+		drivetrain_wait_until_at_target(600);
 
 		intake_in();
 
-		drivetrain_move_straight(-20);
+		drivetrain_move_straight(-24);
 		drivetrain_wait_until_at_target(300);
+		delay(1500);
 
-		drivetrain_move_straight(1);
-		drivetrain_wait_until_at_target(1500);
-
-		drivetrain_move_straight(40);
+		drivetrain_move_straight(50);
 		drivetrain_wait_until_at_target(2000);
 
-		drivetrain_move_straight(-14);
+		drivetrain_move_straight(-10);
 		drivetrain_wait_until_at_target(1500);
 
 		drivetrain_turn_angle(-90);
@@ -85,7 +83,6 @@ void autonomous() {
 		drivetrain_move_straight(-8);
 		drivetrain_wait_until_at_target(1500);
 
-		intake_stop();
 
 		spike_toggle();
 
@@ -97,10 +94,8 @@ void autonomous() {
 		conveyor_up();
 		delay(1500);
 
-		drivetrain_turn_angle(-130);
+		drivetrain_turn_angle(-150);
 		drivetrain_wait_until_at_target(2000);
-
-		conveyor_stop();
 
 		intake_in();
 
@@ -116,7 +111,9 @@ void autonomous() {
 		drivetrain_wait_until_at_target(2000);
 
 		spike_toggle();
+		conveyor_down();
 		delay(500);
+		conveyor_stop();
 
 		drivetrain_move_straight(10);
 		drivetrain_wait_until_at_target(1000);

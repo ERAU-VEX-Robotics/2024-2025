@@ -157,8 +157,6 @@ double left_mg_controller(double target, double current, bool reset) {
 	double voltage =
 	    pid(error, kP, kI, kD, &integral, prev_error, clear_integral);
 
-	printf("error: %lf; voltage: %lf\n", error, voltage);
-
 	prev_error = error;
 
 	return voltage;
@@ -181,8 +179,6 @@ double right_mg_controller(double target, double current, bool reset) {
 
 	double voltage =
 	    pid(error, kP, kI, kD, &integral, prev_error, clear_integral);
-
-	printf("error: %lf; voltage: %lf\n", error, voltage);
 
 	prev_error = error;
 
