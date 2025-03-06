@@ -52,55 +52,72 @@ void competition_initialize() {}
  */
 void autonomous() {
 	drivetrain_resume_pid_tasks();
+	auton_id=SKILLS;
 	switch (auton_id) {
 	case SKILLS:
-		drivetrain_move_straight(30); // Move to ring 1
-		delay(500);
-		conveyor_up();
+		int AmountOfDelay = 3000;
+		drivetrain_move_straight(25.5); // Move to ring 1
 		intake_in(); // Intake ring 1
+		drivetrain_wait_until_at_target(AmountOfDelay);
+		intake_half();// make sure intake dosent get fuckey
+		drivetrain_turn_angle(110); // 290, turn to mobile goal
+		drivetrain_wait_until_at_target(AmountOfDelay);
+		drivetrain_move_straight(-25);	//mode to mobile goal	
 		drivetrain_wait_until_at_target(2000);
-		drivetrain_turn_angle(-80); // 290, turn to ring 2
+		piston_toggle();//take mobile goal
 		delay(500);
-		conveyor_stop();
-		drivetrain_wait_until_at_target(2000);
+		drivetrain_turn_angle(115);//turn to ring 2
+		drivetrain_wait_until_at_target(AmountOfDelay);
+		conveyor_up();//place ring on mobile goal
+		intake_in();
+		drivetrain_move_straight(26);//move to ring 2
+		drivetrain_wait_until_at_target(AmountOfDelay);		
+		drivetrain_turn_angle(77);//turn to corner
+		drivetrain_wait_until_at_target(AmountOfDelay);
+		drivetrain_move_straight(28);//move to ring 3
+		drivetrain_wait_until_at_target(AmountOfDelay);
 		delay(1000);
-		intake_in(); // intake ring 2
+		drivetrain_move_straight(-20);//
+		drivetrain_wait_until_at_target(AmountOfDelay);	
 		delay(1000);
-		drivetrain_move_straight(36); // move to ring 2
-		delay(500);
-		drivetrain_wait_until_at_target(3000);
-		//
-		delay(500);
-		drivetrain_turn_angle(90); //-315, -325, turn to goal
-		intake_stop();
-		drivetrain_wait_until_at_target(1500);
-		drivetrain_move_straight(-30); //-24, move to goal
-		drivetrain_wait_until_at_target(1500);
-		piston_toggle();               // take goal
-		drivetrain_move_straight(-30); // move to set up for goal placement
-		drivetrain_wait_until_at_target(2500);
-		drivetrain_turn_angle(90); //-400 , turn to place goal
-		drivetrain_wait_until_at_target(1500);
-
-		delay(500);
-		drivetrain_move_straight(2);
-		drivetrain_wait_until_at_target(1000);
-		delay(500);
-		conveyor_up(); // place rings on goal
-		intake_half();
-		delay(5000); // 4000
-
-		drivetrain_move_straight(-38); //-36 move to place goal
-		drivetrain_wait_until_at_target(2500);
-		intake_stop();
+		drivetrain_turn_angle(190);
+		drivetrain_wait_until_at_target(AmountOfDelay);
+		drivetrain_move_straight(-22);
+		drivetrain_wait_until_at_target(AmountOfDelay);
+		piston_toggle();
 		conveyor_down();
-		piston_toggle();              // release goal
-		drivetrain_move_straight(24); // back away
-		drivetrain_wait_until_at_target(2500);
-		//
+		delay(500);
 		conveyor_stop();
-		drivetrain_move_straight(1); // Attempt to stop moving
-		drivetrain_wait_until_at_target(1000);
+		intake_in();
+		drivetrain_move_straight(16.2);
+		drivetrain_wait_until_at_target(AmountOfDelay);
+		drivetrain_turn_angle(-82); 
+		drivetrain_wait_until_at_target(AmountOfDelay);
+		drivetrain_move_straight(40);
+		drivetrain_wait_until_at_target(AmountOfDelay);	
+		drivetrain_turn_angle(-140);
+		drivetrain_wait_until_at_target(AmountOfDelay);	
+		intake_half();
+		drivetrain_move_straight(-28);
+		drivetrain_wait_until_at_target(AmountOfDelay);
+		piston_toggle();
+		drivetrain_turn_angle(130);
+		drivetrain_wait_until_at_target(AmountOfDelay);	
+		conveyor_up();	
+		drivetrain_move_straight(24);
+		intake_in();
+		drivetrain_wait_until_at_target(1500);
+		drivetrain_move_straight(18);
+		drivetrain_wait_until_at_target(1500);
+		delay(500);
+		drivetrain_turn_angle(-190);
+		drivetrain_wait_until_at_target(AmountOfDelay);
+		conveyor_stop();
+		drivetrain_move_straight(-26);
+		drivetrain_wait_until_at_target(AmountOfDelay);
+		piston_toggle();
+		drivetrain_move_straight(24);
+		drivetrain_wait_until_at_target(AmountOfDelay);
 		break;
 	case MATCH:
 		drivetrain_move_straight(-24); // Move to ring 1
