@@ -7,6 +7,7 @@
 #include "ringtail/motor_group.h"
 #include "ringtail/reference_controllers.h"
 #include <math.h>
+#include <stdio.h>
 
 /**
  * @file drivetrain.c
@@ -49,7 +50,7 @@ static uint16_t kD = 0;
 static const double GEAR_RATIO = 36.0 / 60.0;
 
 static const double WHEEL_DIAMETER = 3.25;
-static const double BASE_WIDTH = 11.375;
+static const double BASE_WIDTH = 11.5;
 
 /**
  * Motor encoder position threshold within which the drivetrain's PID
@@ -57,6 +58,9 @@ static const double BASE_WIDTH = 11.375;
  * relevant.
  */
 static const double ERROR_ACCUMULATION_THRESH = 50;
+
+static const double OFFSET_VOLTAGE_THRESHOLD = 10;
+static const double OFFSET_VOLTAGE = 600;
 
 void drivetrain_init(void) {
 	left_mutex = mutex_create();
@@ -85,8 +89,8 @@ void drivetrain_opcontrol(controller_analog_e_t left,
 
 void drivetrain_move_straight(double inches) {
 	kP = 20;
-	kI = 5;
-	kD = 10;
+	kI = 1;
+	kD = 16;
 
 	double target = inches / (WHEEL_DIAMETER / 2) * 180 / M_PI;
 
@@ -101,9 +105,9 @@ void drivetrain_move_straight(double inches) {
 }
 
 void drivetrain_turn_angle(double angle) {
-	kP = 20;
-	kI = 5;
-	kD = 10;
+	kP = 28;
+	kI = 2;
+	kD = 5;
 
 	double inches = angle * M_PI / 180 * BASE_WIDTH / 2;
 	double target = inches / (WHEEL_DIAMETER / 2) * 180 / M_PI;
@@ -156,6 +160,13 @@ double left_mg_controller(double target, double current, bool reset) {
 	double voltage =
 	    pid(error, kP, kI, kD, &integral, prev_error, clear_integral);
 
+	if (voltage > OFFSET_VOLTAGE_THRESHOLD)
+		voltage += OFFSET_VOLTAGE;
+	else if (voltage < -OFFSET_VOLTAGE_THRESHOLD)
+		voltage -= OFFSET_VOLTAGE;
+
+	printf("error: %lf; voltage: %lf\n", error, voltage);
+
 	prev_error = error;
 
 	return voltage;
@@ -178,6 +189,13 @@ double right_mg_controller(double target, double current, bool reset) {
 
 	double voltage =
 	    pid(error, kP, kI, kD, &integral, prev_error, clear_integral);
+
+	if (voltage > OFFSET_VOLTAGE_THRESHOLD)
+		voltage += OFFSET_VOLTAGE + 200;
+	else if (voltage < OFFSET_VOLTAGE_THRESHOLD)
+		voltage -= OFFSET_VOLTAGE - 300;
+
+	printf("error: %lf; voltage: %lf\n", error, voltage);
 
 	prev_error = error;
 
