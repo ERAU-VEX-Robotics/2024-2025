@@ -151,11 +151,11 @@ void opcontrol() {
 	while (true) {
 		intake_opcontrol(E_CONTROLLER_DIGITAL_R2, E_CONTROLLER_DIGITAL_R1);
 
-		conveyor_opcontrol(E_CONTROLLER_DIGITAL_L2, E_CONTROLLER_DIGITAL_A);
+		conveyor_opcontrol(E_CONTROLLER_DIGITAL_L2, E_CONTROLLER_DIGITAL_L1);
 		drivetrain_opcontrol(E_CONTROLLER_ANALOG_LEFT_Y,
 		                     E_CONTROLLER_ANALOG_LEFT_X);
 		// arm_opcontrol(E_CONTROLLER_DIGITAL_UP, E_CONTROLLER_DIGITAL_DOWN);
-		piston_opcontrol(E_CONTROLLER_DIGITAL_L1);
+		piston_opcontrol(E_CONTROLLER_DIGITAL_A);
 		delay(20); // Run for 20 ms then update
 	}
 	drivetrain_delete_pid_tasks();
