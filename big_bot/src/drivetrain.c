@@ -37,7 +37,8 @@ static Rgt_Controller_Info right_pid_info;
 
 double left_mg_get_pos(void);
 double right_mg_get_pos(void);
-double get_imu_rotation(void);
+double get_robot_heading(void);
+double get_negative_robot_heading(void);
 
 double left_mg_controller(double target, double current, bool reset);
 double right_mg_controller(double target, double current, bool reset);
@@ -120,27 +121,25 @@ void drivetrain_move_straight(double inches) {
 }
 
 void drivetrain_turn_angle(double angle) {
-	kP = 22;
-	kI = 1;
-	kD = 7;
 
-	// Technically, there's a pi/180 in here, but it gets canceled out later
-	double inches = angle * (BASE_WIDTH / 2);
-	// Technically, inches needs to be multiplied by 180/pi to convert from
-	// radians to degrees. However, this cancels out the prior pi/180, so it's
-	// omitted
-	double target = inches / (WHEEL_DIAMETER);
+	angle = fmod(angle, 360.0);
+	if (angle < 0)
+		angle += 360.0;
 
-	imu_tare_rotation(imu_port);
+	kP = 100;
+	kI = 0;
+	kD = 0;
+
+	imu_tare_heading(imu_port);
 
 	rgt_controller_reset(&left_pid_info);
 	rgt_controller_reset(&right_pid_info);
 
-	left_pid_info.get_sensor_data = get_imu_rotation;
-	right_pid_info.get_sensor_data = get_imu_rotation;
+	left_pid_info.get_sensor_data = get_robot_heading;
+	right_pid_info.get_sensor_data = get_negative_robot_heading;
 
-	rgt_controller_set_target(&left_pid_info, target);
-	rgt_controller_set_target(&right_pid_info, -target);
+	rgt_controller_set_target(&left_pid_info, angle);
+	rgt_controller_set_target(&right_pid_info, -angle);
 }
 
 void drivetrain_wait_until_at_target(uint32_t timeout) {
@@ -163,7 +162,8 @@ double right_mg_get_pos(void) {
 	return rgt_mg_get_average_position(right_motors) * GEAR_RATIO;
 }
 
-double get_imu_rotation(void) { return imu_get_rotation(imu_port); }
+double get_robot_heading(void) { return imu_get_heading(imu_port); }
+double get_negative_robot_heading(void) { return -imu_get_heading(imu_port); }
 
 double left_mg_controller(double target, double current, bool reset) {
 	static double integral, prev_error = 0;
