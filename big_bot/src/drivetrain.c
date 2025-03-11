@@ -1,5 +1,6 @@
 #include "drivetrain.h"
 
+#include "pros/imu.h"
 #include "pros/misc.h"
 #include "pros/motors.h"
 #include "pros/rtos.h"
@@ -8,7 +9,6 @@
 #include "ringtail/motor_group.h"
 #include "ringtail/reference_controllers.h"
 #include <math.h>
-#include <stdio.h>
 
 /**
  * @file drivetrain.c
@@ -19,6 +19,8 @@
 // Motor groups for each side of the drivetrain
 static rgt_motor_group right_motors = {18, 19, 20};
 static rgt_motor_group left_motors = {-8, -9, -10};
+
+static uint8_t imu_port = 11;
 
 /**
  * Ringtail task variables and function prototypes for each side of the
@@ -35,6 +37,7 @@ static Rgt_Controller_Info right_pid_info;
 
 double left_mg_get_pos(void);
 double right_mg_get_pos(void);
+double get_imu_rotation(void);
 
 double left_mg_controller(double target, double current, bool reset);
 double right_mg_controller(double target, double current, bool reset);
@@ -83,6 +86,8 @@ void drivetrain_init(void) {
 
 	rgt_mg_set_brake_mode(left_motors, E_MOTOR_BRAKE_COAST);
 	rgt_mg_set_brake_mode(right_motors, E_MOTOR_BRAKE_COAST);
+
+	imu_reset(imu_port);
 }
 
 void drivetrain_opcontrol(controller_analog_e_t straight,
@@ -103,8 +108,12 @@ void drivetrain_move_straight(double inches) {
 	double target = (180 / M_PI) * (inches / (WHEEL_DIAMETER));
 	rgt_mg_reset_positions(left_motors);
 	rgt_mg_reset_positions(right_motors);
+
 	rgt_controller_reset(&left_pid_info);
 	rgt_controller_reset(&right_pid_info);
+
+	left_pid_info.get_sensor_data = left_mg_get_pos;
+	right_pid_info.get_sensor_data = right_mg_get_pos;
 
 	rgt_controller_set_target(&left_pid_info, target);
 	rgt_controller_set_target(&right_pid_info, target);
@@ -115,14 +124,20 @@ void drivetrain_turn_angle(double angle) {
 	kI = 1;
 	kD = 7;
 
-	double inches = angle * (BASE_WIDTH / 2);  // the (PI/180) was removed
-	double target = inches / (WHEEL_DIAMETER); // the (180/PI) was removed
+	// Technically, there's a pi/180 in here, but it gets canceled out later
+	double inches = angle * (BASE_WIDTH / 2);
+	// Technically, inches needs to be multiplied by 180/pi to convert from
+	// radians to degrees. However, this cancels out the prior pi/180, so it's
+	// omitted
+	double target = inches / (WHEEL_DIAMETER);
 
-	rgt_mg_reset_positions(left_motors);
-	rgt_mg_reset_positions(right_motors);
+	imu_tare_rotation(imu_port);
 
 	rgt_controller_reset(&left_pid_info);
 	rgt_controller_reset(&right_pid_info);
+
+	left_pid_info.get_sensor_data = get_imu_rotation;
+	right_pid_info.get_sensor_data = get_imu_rotation;
 
 	rgt_controller_set_target(&left_pid_info, target);
 	rgt_controller_set_target(&right_pid_info, -target);
@@ -147,6 +162,8 @@ double right_mg_get_pos(void) {
 	// from motor to wheel
 	return rgt_mg_get_average_position(right_motors) * GEAR_RATIO;
 }
+
+double get_imu_rotation(void) { return imu_get_rotation(imu_port); }
 
 double left_mg_controller(double target, double current, bool reset) {
 	static double integral, prev_error = 0;
