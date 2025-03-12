@@ -120,17 +120,12 @@ void drivetrain_move_straight(double inches) {
 	rgt_controller_set_target(&right_pid_info, target);
 }
 
-void drivetrain_turn_angle(double angle) {
+void drivetrain_turn_angle(double angle, double direction) {
+	kP = 90;
+	kI = 1;
+	kD = 20;
 
-	angle = fmod(angle, 360.0);
-	if (angle < 0)
-		angle += 360.0;
-
-	kP = 100;
-	kI = 0;
-	kD = 0;
-
-	imu_tare_heading(imu_port);
+	imu_set_heading(imu_port,direction);
 
 	rgt_controller_reset(&left_pid_info);
 	rgt_controller_reset(&right_pid_info);
@@ -146,6 +141,7 @@ void drivetrain_wait_until_at_target(uint32_t timeout) {
 	while ((!rgt_controller_at_target(&right_pid_info) ||
 	        !rgt_controller_at_target(&left_pid_info)) &&
 	       timeout > 0) {
+			//printf(get_robot_heading);
 		timeout -= 2;
 		delay(2);
 	}

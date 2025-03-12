@@ -60,7 +60,7 @@ void drivetrain_move_straight(double inches);
  *
  * @param angle the angle for the drive to rotate counterclockwise, in degrees
  */
-void drivetrain_turn_angle(double angle);
+void drivetrain_turn_angle(double angle, double direction);
 
 /**
  * @brief Delays until all drivetrain PID controllers have reached their targets
