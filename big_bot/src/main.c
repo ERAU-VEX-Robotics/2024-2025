@@ -58,13 +58,13 @@ void autonomous() {
 		int AmountOfDelay = 3000;
 		int AmountOfTurnDelay = 2000;
 		//first ring
-		drivetrain_move_straight(25.5); // Move to ring 1
+		drivetrain_move_straight(24.5); // Move to ring 1
 		intake_in(); // Intake ring 1
 		drivetrain_wait_until_at_target(AmountOfDelay);
 		intake_half();// make sure intake dosent get fuckey
 
 		//1st mobile goal
-		drivetrain_turn_angle(90,1); // 290, turn to mobile goal
+		drivetrain_turn_angle(90); // 290, turn to mobile goal
 		drivetrain_wait_until_at_target(AmountOfDelay);
 		drivetrain_move_straight(-24);	//mode to mobile goal	
 		drivetrain_wait_until_at_target(2000);
@@ -72,7 +72,7 @@ void autonomous() {
 		delay(500);
 
 		//2nd ring
-		drivetrain_turn_angle(90,1);//turn to ring 2
+		drivetrain_turn_angle(90);//turn to ring 2
 		drivetrain_wait_until_at_target(AmountOfTurnDelay);
 		conveyor_up();//place ring on mobile goal
 		intake_in();
@@ -80,7 +80,7 @@ void autonomous() {
 		drivetrain_wait_until_at_target(AmountOfDelay);
 		
 		//3rd ring
-		drivetrain_turn_angle(45,1);//turn to corner
+		drivetrain_turn_angle(45);//turn to corner
 		drivetrain_wait_until_at_target(AmountOfDelay);
 		drivetrain_move_straight(40);//move to ring 3
 		drivetrain_wait_until_at_target(AmountOfDelay);
@@ -90,7 +90,7 @@ void autonomous() {
 		drivetrain_move_straight(-20);//move away from corner
 		drivetrain_wait_until_at_target(AmountOfDelay);	
 		delay(1000);
-		drivetrain_turn_angle(180,1);//turn around
+		drivetrain_turn_angle(180);//turn around
 		drivetrain_wait_until_at_target(AmountOfDelay);
 		drivetrain_move_straight(-40);//move twords corner
 		drivetrain_wait_until_at_target(AmountOfDelay);
@@ -103,15 +103,15 @@ void autonomous() {
 		//4th ring
 		drivetrain_move_straight(16);//move away from corner
 		drivetrain_wait_until_at_target(2000);
-		drivetrain_turn_angle(305,1); //turn twords ring 4
+		drivetrain_turn_angle(305); //turn twords ring 4
 		drivetrain_wait_until_at_target(AmountOfDelay);
 		drivetrain_move_straight(-24);//move twords ring 4
 		drivetrain_wait_until_at_target(AmountOfDelay);
-		drivetrain_move_straight(58);//move twords ring 4
+		drivetrain_move_straight(57);//move twords ring 4
 		drivetrain_wait_until_at_target(AmountOfDelay);	
 
 		//2nd mobile goal
-		drivetrain_turn_angle(220,1);//turn twords mobile goal 2
+		drivetrain_turn_angle(230);//turn twords mobile goal 2
 		drivetrain_wait_until_at_target(AmountOfDelay);	
 		intake_half();
 		drivetrain_move_straight(-28);//move twords mobile goal 2
@@ -120,7 +120,7 @@ void autonomous() {
 
 		//5th ring
 		conveyor_up();	
-		drivetrain_turn_angle(90,1);//turn twords rings 5
+		drivetrain_turn_angle(90);//turn twords rings 5
 		drivetrain_wait_until_at_target(AmountOfDelay);	
 		drivetrain_move_straight(24);//go twords ring 5
 		intake_in();
@@ -130,7 +130,7 @@ void autonomous() {
 		delay(500);
 
 		//place 2nd mobile goal
-		drivetrain_turn_angle(180,1);//turn around
+		drivetrain_turn_angle(180);//turn around
 		drivetrain_wait_until_at_target(AmountOfDelay);
 		conveyor_stop();//stop convayer to make sure we dont place the blue ring
 		drivetrain_move_straight(-26);//go twords corncer

@@ -102,9 +102,9 @@ void drivetrain_opcontrol(controller_analog_e_t straight,
 }
 
 void drivetrain_move_straight(double inches) {
-	kP = 11;
-	kI = 1;
-	kD = 7;
+	kP = 13;//8
+	kI = 1;//8
+	kD = 7;//2
 
 	double target = (180 / M_PI) * (inches / (WHEEL_DIAMETER));
 	rgt_mg_reset_positions(left_motors);
@@ -120,12 +120,12 @@ void drivetrain_move_straight(double inches) {
 	rgt_controller_set_target(&right_pid_info, target);
 }
 
-void drivetrain_turn_angle(double angle, double direction) {
-	kP = 90;
-	kI = 1;
+void drivetrain_turn_angle(double angle) {
+	kP = 75;
+	kI = 1;//100
 	kD = 20;
 
-	imu_set_heading(imu_port,direction);
+	imu_set_heading(imu_port,1);
 
 	rgt_controller_reset(&left_pid_info);
 	rgt_controller_reset(&right_pid_info);
