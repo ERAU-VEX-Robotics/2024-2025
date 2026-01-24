@@ -30,13 +30,17 @@ void drivetrain_init(void);
  * @details This function uses PROS's C controller API to get joystick values,
  * and uses those values to determine how to power the motors of the drivetrain.
  *
- * @param left The analog input on the controller to use to move the left motors
- * on the drivetrain
- * @param right The analog input on the controller to use to move the right
- * motors on the drivetrain
+ * @param left_X The analog input on the controller to use to move the left motors
+ * on the drivetrain (X)
+ * @param right_X The analog input on the controller to use to move the right
+ * motors on the drivetrain (X)
+ * @param left_Y The analog input on the controller to use to move the left motors
+ * on the drivetrain (Y)
+ * @param right_Y The analog input on the controller to use to move the right
+ * motors on the drivetrain (Y)
  */
-void drivetrain_opcontrol(controller_analog_e_t left,
-                          controller_analog_e_t right);
+void drivetrain_opcontrol(controller_analog_e_t left_X, controller_analog_e_t left_Y,
+                          controller_analog_e_t right_X, controller_analog_e_t right_Y);
 
 /**
  * @brief Moves the drive forward by the given distance, in inches

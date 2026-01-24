@@ -12,7 +12,7 @@
  * intake
  */
 
-static rgt_motor_group intake_motors = {2, 4};
+static rgt_motor_group intake_motors = {-3, 5};
 
 void intake_init(void) {
 	rgt_mg_set_gearing(intake_motors, E_MOTOR_GEAR_GREEN);
