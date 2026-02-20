@@ -12,11 +12,15 @@
  * abstracting away specific information.
  */
 
-//moves arm up
-void arm_up(void);
 
-//moves arm down
-void arm_down(void);
+ void ejector_init(void);
+
+
+void ejector_out(void);
+
+void ejector_in(void);
+
+void ejector_stop(void);
 
 /**
  * @brief Arm operation controller
@@ -27,7 +31,7 @@ void arm_down(void);
  * @param up_button   - Button to call arm_up to move arm up
  * @param down_button - Button to call arm_down to move arm down
  */
-void arm_opcontrol(controller_digital_e_t up_button,
+void ejector_opcontrol(controller_digital_e_t up_button,
                       controller_digital_e_t down_button);
 
 

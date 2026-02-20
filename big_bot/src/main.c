@@ -93,8 +93,8 @@ void autonomous() {
 
 		break;
 	case MATCH:
-		int AmountOfDelay = 3000;
-		int AmountOfTurnDelay = 2000;
+		//int AmountOfDelay = 3000;
+		//int AmountOfTurnDelay = 2000;
 		//I have no idea if any of this works, it hasn't been tested
 		//Push Back Nonsense
 		drivetrain_move_straight(18);

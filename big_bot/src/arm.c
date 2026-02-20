@@ -9,7 +9,7 @@
  *
  * @brief Function implementations and local variables for controlling the intake
  */ 
-static rgt_motor_group ejector = {20};
+static rgt_motor_group ejector = {13};
 void ejector_init(void) {
 	rgt_mg_set_gearing(ejector, E_MOTOR_GEAR_GREEN);
 	rgt_mg_set_encoder_units(ejector, E_MOTOR_ENCODER_DEGREES);
@@ -22,11 +22,11 @@ void ejector_in(void) { rgt_mg_move(ejector, -127); }
 
 void ejector_stop(void) { rgt_mg_move(ejector, 0); }
 
-void conveyor_opcontrol(controller_digital_e_t up_button,
+void ejector_opcontrol(controller_digital_e_t up_button,
                         controller_digital_e_t down_button) {
-	if (controller_get_digital(E_CONTROLLER_MASTER, up_button)) {
+	if (controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_UP)) {
 		ejector_out();
-	} else if (controller_get_digital(E_CONTROLLER_MASTER, down_button)) {
+	} else if (controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_DOWN)) {
 		ejector_in();
 	} else {
 		// Turn off if no inputs
