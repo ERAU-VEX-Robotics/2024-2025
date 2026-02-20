@@ -57,7 +57,7 @@ void autonomous() {
 	case SKILLS:
 		int AmountOfDelay = 3000;
 		int AmountOfTurnDelay = 2000;
-
+		//I have no idea if any of this works, it hasn't been tested
 		//Push Back Nonsense
 		drivetrain_move_straight(18);
 		drivetrain_wait_until_at_target(AmountOfDelay);
@@ -89,101 +89,44 @@ void autonomous() {
 		intake_in();
 		conveyor_up();
 		delay(5000);
-		
 
 
-
-
-
-		//first ring
-		drivetrain_move_straight(24.5); // Move to ring 1
-		intake_in(); // Intake ring 1
-		drivetrain_wait_until_at_target(AmountOfDelay);
-		intake_half();// make sure intake dosent get fuckey
-
-		//1st mobile goal
-		drivetrain_turn_angle(90); // 290, turn to mobile goal
-		drivetrain_wait_until_at_target(AmountOfDelay);
-		drivetrain_move_straight(-24);	//mode to mobile goal	
-		drivetrain_wait_until_at_target(2000);
-		piston_toggle();//take mobile goal
-		delay(500);
-
-		//2nd ring
-		drivetrain_turn_angle(90);//turn to ring 2
-		drivetrain_wait_until_at_target(AmountOfTurnDelay);
-		conveyor_up();//place ring on mobile goal
-		intake_in();
-		drivetrain_move_straight(24);//move to ring 2
-		drivetrain_wait_until_at_target(AmountOfDelay);
-		
-		//3rd ring
-		drivetrain_turn_angle(45);//turn to corner
-		drivetrain_wait_until_at_target(AmountOfDelay);
-		drivetrain_move_straight(40);//move to ring 3
-		drivetrain_wait_until_at_target(AmountOfDelay);
-		delay(1000);
-
-		//place 1st mobile goal
-		drivetrain_move_straight(-20);//move away from corner
-		drivetrain_wait_until_at_target(AmountOfDelay);	
-		delay(1000);
-		drivetrain_turn_angle(180);//turn around
-		drivetrain_wait_until_at_target(AmountOfDelay);
-		drivetrain_move_straight(-40);//move twords corner
-		drivetrain_wait_until_at_target(AmountOfDelay);
-		piston_toggle();//place piston in corner
-		conveyor_down();
-		delay(500);
-		conveyor_stop();
-		intake_in();
-
-		//4th ring
-		drivetrain_move_straight(16);//move away from corner
-		drivetrain_wait_until_at_target(2000);
-		drivetrain_turn_angle(305); //turn twords ring 4
-		drivetrain_wait_until_at_target(AmountOfDelay);
-		drivetrain_move_straight(-24);//move twords ring 4
-		drivetrain_wait_until_at_target(AmountOfDelay);
-		drivetrain_move_straight(57);//move twords ring 4
-		drivetrain_wait_until_at_target(AmountOfDelay);	
-
-		//2nd mobile goal
-		drivetrain_turn_angle(230);//turn twords mobile goal 2
-		drivetrain_wait_until_at_target(AmountOfDelay);	
-		intake_half();
-		drivetrain_move_straight(-28);//move twords mobile goal 2
-		drivetrain_wait_until_at_target(AmountOfDelay);
-		piston_toggle();//pick up mobile goal 2
-
-		//5th ring
-		conveyor_up();	
-		drivetrain_turn_angle(90);//turn twords rings 5
-		drivetrain_wait_until_at_target(AmountOfDelay);	
-		drivetrain_move_straight(24);//go twords ring 5
-		intake_in();
-		drivetrain_wait_until_at_target(1500);
-		drivetrain_move_straight(18);//go twords corner
-		drivetrain_wait_until_at_target(1500);
-		delay(500);
-
-		//place 2nd mobile goal
-		drivetrain_turn_angle(180);//turn around
-		drivetrain_wait_until_at_target(AmountOfDelay);
-		conveyor_stop();//stop convayer to make sure we dont place the blue ring
-		drivetrain_move_straight(-26);//go twords corncer
-		drivetrain_wait_until_at_target(AmountOfDelay);
-		piston_toggle();//release mobile goal
-		drivetrain_move_straight(24);//move away from corner
-		drivetrain_wait_until_at_target(AmountOfDelay);
 		break;
 	case MATCH:
-		drivetrain_move_straight(-24); // Move to ring 1
-		drivetrain_wait_until_at_target(2500);
-		piston_toggle();
-		drivetrain_move_straight(24); //-400 , turn to place goal
-		drivetrain_wait_until_at_target(1500);
+		int AmountOfDelay = 3000;
+		int AmountOfTurnDelay = 2000;
+		//I have no idea if any of this works, it hasn't been tested
+		//Push Back Nonsense
+		drivetrain_move_straight(18);
+		drivetrain_wait_until_at_target(AmountOfDelay);
+		drivetrain_turn_angle(90);
+		drivetrain_wait_until_at_target(AmountOfTurnDelay);
+		drivetrain_move_straight(24);
+		drivetrain_wait_until_at_target(AmountOfDelay);
+		drivetrain_turn_angle(90);
+		drivetrain_wait_until_at_target(AmountOfTurnDelay);
+		drivetrain_move_straight(6);
+		drivetrain_wait_until_at_target(AmountOfDelay);
+
+		intake_in();
 		conveyor_up();
+		delay(5000);
+		drivetrain_move_straight(-6);
+		drivetrain_wait_until_at_target(AmountOfDelay);
+		intake_stop();
+		conveyor_stop();
+		drivetrain_turn_angle(-45);
+		drivetrain_wait_until_at_target(AmountOfTurnDelay);
+		intake_out();
+		conveyor_down();
+		delay(2500);
+		drivetrain_turn_angle(45);
+		drivetrain_wait_until_at_target(AmountOfTurnDelay);
+		drivetrain_move_straight(36);
+		drivetrain_wait_until_at_target(AmountOfDelay);
+		intake_in();
+		conveyor_up();
+		delay(5000);
 		break;
 	case TEST:
 		break;
