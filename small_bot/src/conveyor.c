@@ -11,7 +11,7 @@
  * conveyor
  */
 
-static rgt_motor_group conveyor_run = {-9};
+static rgt_motor_group conveyor_run = {1, 20};
 
 void conveyor_up(void) { rgt_mg_move(conveyor_run, 127); }
 
