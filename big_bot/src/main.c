@@ -55,6 +55,7 @@ void autonomous() {
 	auton_id=SKILLS;
 	switch (auton_id) {
 	case SKILLS:
+		/* 
 		int AmountOfDelay = 3000;
 		int AmountOfTurnDelay = 2000;
 		//I have no idea if any of this works, it hasn't been tested
@@ -87,7 +88,8 @@ void autonomous() {
 		drivetrain_move_straight(36);
 		drivetrain_wait_until_at_target(AmountOfDelay);
 		intake_in();
-		conveyor_up();
+		conveyor_up(); 
+		*/
 		delay(5000);
 
 
@@ -97,6 +99,7 @@ void autonomous() {
 		//int AmountOfTurnDelay = 2000;
 		//I have no idea if any of this works, it hasn't been tested
 		//Push Back Nonsense
+		/*
 		drivetrain_move_straight(18);
 		drivetrain_wait_until_at_target(AmountOfDelay);
 		drivetrain_turn_angle(90);
@@ -126,6 +129,7 @@ void autonomous() {
 		drivetrain_wait_until_at_target(AmountOfDelay);
 		intake_in();
 		conveyor_up();
+		*/
 		delay(5000);
 		break;
 	case TEST:
