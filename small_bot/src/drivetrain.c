@@ -16,8 +16,8 @@
  */
 
 // Motor groups for each side of the drivetrain
-static rgt_motor_group left_motors = {-11, -17, -13};
-static rgt_motor_group right_motors = {14, 15, 16};
+static rgt_motor_group left_motors = {-10, 9};
+static rgt_motor_group right_motors = {2, 3};
 
 /**
  * Ringtail task variables and function prototypes for each side of the
@@ -47,7 +47,7 @@ static uint16_t kD = 0;
  * # of teeth on the gears attached to the wheels /
  * # of teeth on the gears attached to the sensor - in this case the motor
  */
-static const double GEAR_RATIO = 36.0 / 60.0;
+static const double GEAR_RATIO = 16.0 / 8.0;
 
 static const double WHEEL_DIAMETER = 3.25;
 static const double BASE_WIDTH = 11.5;
