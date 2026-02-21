@@ -60,10 +60,10 @@ void autonomous() {
 		int AmountOfTurnDelay = 2000;
 		//I have no idea if any of this works, it hasn't been tested
 		//Push Back Nonsense
-		drivetrain_move_straight(1);
+		/* drivetrain_move_straight(1);
 		drivetrain_wait_until_at_target(500);
 
-		/*
+		
 		drivetrain_turn_angle(90);
 		drivetrain_wait_until_at_target(AmountOfTurnDelay);
 		drivetrain_move_straight(24);
