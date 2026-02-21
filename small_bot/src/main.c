@@ -58,7 +58,7 @@ void autonomous() {
 	case MATCH:
 		break;
 	case SKILLS:
-
+		/*
 		drivetrain_move_straight(25);
 		drivetrain_wait_until_at_target(600);
 
@@ -117,7 +117,7 @@ void autonomous() {
 
 		drivetrain_move_straight(10);
 		drivetrain_wait_until_at_target(1000);
-
+		*/
 		break;
 	default:
 		break;
