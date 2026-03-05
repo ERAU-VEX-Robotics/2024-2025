@@ -12,7 +12,7 @@
  * conveyor
  */
 
-static rgt_motor_group conveyor_run = {14, -15};
+static rgt_motor_group conveyor_run = {-15};
 
 void conveyor_init(void) {
 	rgt_mg_set_gearing(conveyor_run, E_MOTOR_GEAR_GREEN);

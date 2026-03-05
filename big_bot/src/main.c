@@ -19,6 +19,7 @@ void initialize() {
 	drivetrain_init();
 	intake_init();
 	conveyor_init();
+	ejector_init();
 }
 
 /**
@@ -154,7 +155,7 @@ void opcontrol() {
 
 		conveyor_opcontrol(E_CONTROLLER_DIGITAL_L1, E_CONTROLLER_DIGITAL_L2);
 		drivetrain_opcontrol(E_CONTROLLER_ANALOG_LEFT_X, E_CONTROLLER_ANALOG_RIGHT_X, E_CONTROLLER_ANALOG_LEFT_Y, E_CONTROLLER_ANALOG_RIGHT_Y);
-		// arm_opcontrol(E_CONTROLLER_DIGITAL_UP, E_CONTROLLER_DIGITAL_DOWN);
+		ejector_opcontrol(E_CONTROLLER_DIGITAL_UP, E_CONTROLLER_DIGITAL_DOWN);
 		piston_opcontrol(E_CONTROLLER_DIGITAL_A);
 		delay(20); // Run for 20 ms then update
 

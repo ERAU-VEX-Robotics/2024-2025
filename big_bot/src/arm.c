@@ -24,9 +24,9 @@ void ejector_stop(void) { rgt_mg_move(ejector, 0); }
 
 void ejector_opcontrol(controller_digital_e_t up_button,
                         controller_digital_e_t down_button) {
-	if (controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_UP)) {
+	if (controller_get_digital(E_CONTROLLER_MASTER, up_button)) {
 		ejector_out();
-	} else if (controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_DOWN)) {
+	} else if (controller_get_digital(E_CONTROLLER_MASTER, down_button)) {
 		ejector_in();
 	} else {
 		// Turn off if no inputs
