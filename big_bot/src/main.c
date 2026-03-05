@@ -56,12 +56,15 @@ void autonomous() {
 	auton_id=SKILLS;
 	switch (auton_id) {
 	case SKILLS:
+		
 		int AmountOfDelay = 3000;
 		int AmountOfTurnDelay = 2000;
 		//I have no idea if any of this works, it hasn't been tested
 		//Push Back Nonsense
-		drivetrain_move_straight(18);
-		drivetrain_wait_until_at_target(AmountOfDelay);
+		/* drivetrain_move_straight(1);
+		drivetrain_wait_until_at_target(500);
+
+		
 		drivetrain_turn_angle(90);
 		drivetrain_wait_until_at_target(AmountOfTurnDelay);
 		drivetrain_move_straight(24);
@@ -70,14 +73,17 @@ void autonomous() {
 		drivetrain_wait_until_at_target(AmountOfTurnDelay);
 		drivetrain_move_straight(6);
 		drivetrain_wait_until_at_target(AmountOfDelay);
-
+		*/
+		
 		intake_in();
 		conveyor_up();
 		delay(5000);
-		drivetrain_move_straight(-6);
-		drivetrain_wait_until_at_target(AmountOfDelay);
+		//drivetrain_move_straight(-6);
+		//drivetrain_wait_until_at_target(AmountOfDelay);
 		intake_stop();
 		conveyor_stop();
+		/*
+		
 		drivetrain_turn_angle(-45);
 		drivetrain_wait_until_at_target(AmountOfTurnDelay);
 		intake_out();
@@ -88,9 +94,10 @@ void autonomous() {
 		drivetrain_move_straight(36);
 		drivetrain_wait_until_at_target(AmountOfDelay);
 		intake_in();
-		conveyor_up();
+		conveyor_up(); 
+		
 		delay(5000);
-
+		*/
 
 		break;
 	case MATCH:
@@ -98,8 +105,11 @@ void autonomous() {
 		//int AmountOfTurnDelay = 2000;
 		//I have no idea if any of this works, it hasn't been tested
 		//Push Back Nonsense
+		
 		drivetrain_move_straight(18);
 		drivetrain_wait_until_at_target(AmountOfDelay);
+
+		/*
 		drivetrain_turn_angle(90);
 		drivetrain_wait_until_at_target(AmountOfTurnDelay);
 		drivetrain_move_straight(24);
@@ -127,7 +137,9 @@ void autonomous() {
 		drivetrain_wait_until_at_target(AmountOfDelay);
 		intake_in();
 		conveyor_up();
+		
 		delay(5000);
+		*/
 		break;
 	case TEST:
 		break;
