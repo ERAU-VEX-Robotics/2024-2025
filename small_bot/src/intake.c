@@ -11,8 +11,8 @@
  * intake
  */
 
-static rgt_motor_group intake_pivot = {1};
-static rgt_motor_group intake_motors = {1};
+static rgt_motor_group intake_pivot = {9};
+static rgt_motor_group intake_motors = {20, -19};
 
 void intake_up(void) {
 	// rgt_mg_move(intake_pivot, 127);  // todo fix voltages
